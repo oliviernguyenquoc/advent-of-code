@@ -17,7 +17,7 @@ def check_report(nuclear_reports: list[int]) -> bool:
     return all(increase_checks) or all(decrease_checks)
 
 
-with open("./advent_of_code_2024/day2/input.txt", encoding="utf-8") as f:
+with open("./day2/input.txt", encoding="utf-8") as f:
     instruction_list: list[str] = f.read().splitlines()
 
 nb_list: list[int] = []
