@@ -1,7 +1,7 @@
 default_language_version:
   python: python3.12
 exclude: ".git|.tox"
-default_stages: [commit]
+default_stages: [pre-commit]
 fail_fast: true
 
 repos:
