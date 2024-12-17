@@ -1,9 +1,9 @@
 import re
 import dataclasses
-import time
 
 with open("./2024/day14/input.txt", encoding="utf-8") as f:
     instruction_list: list[str] = f.readlines()
+
 
 @dataclasses.dataclass
 class Robot:
@@ -54,21 +54,27 @@ for i in range(NB_CYCLES):
     robot_positions = ["." * TILE_WIDE] * TILE_TALL
     for robot in robot_list:
         robot.move()
-        robot_positions[robot.p_y] = robot_positions[robot.p_y][:robot.p_x] + "#" + robot_positions[robot.p_y][robot.p_x+1:]
+        robot_positions[robot.p_y] = (
+            robot_positions[robot.p_y][: robot.p_x]
+            + "#"
+            + robot_positions[robot.p_y][robot.p_x + 1 :]
+        )
         if "############################" in robot_positions[robot.p_y]:
             print(f"------ {i} -----")
             print("\n".join(robot_positions))
             break
-    
+
     if "############################" in robot_positions[robot.p_y]:
         break
 
-    if i+1 == 100:
+    if i + 1 == 100:
         robot_count = {i: 0 for i in range(5)}
         for robot in robot_list:
             robot_count[robot.witch_quadrant()] += 1
 
         print(robot_count)
-        print(f"Part 1: {robot_count[1] * robot_count[2] * robot_count[3] * robot_count[4]}")
+        print(
+            f"Part 1: {robot_count[1] * robot_count[2] * robot_count[3] * robot_count[4]}"
+        )
 
 print(f"Part 2: {i+1}")
