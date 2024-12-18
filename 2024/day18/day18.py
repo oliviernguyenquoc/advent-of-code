@@ -1,5 +1,3 @@
-import networkx
-
 with open("./2024/day18/input.txt", encoding="utf-8") as f:
     instruction_list: list[str] = f.readlines()
 
@@ -10,11 +8,49 @@ for i, instruction in enumerate(instruction_list):
     incoming_bytes.append((int(x_str), int(y_str)))
 
 
+class Graph:
+    def __init__(self):
+        self.nodes = {}
+
+    def add_node(self, node):
+        if node not in self.nodes:
+            self.nodes[node] = []
+
+    def add_edge(self, node1, node2):
+        if node1 in self.nodes and node2 in self.nodes:
+            self.nodes[node1].append(node2)
+            self.nodes[node2].append(node1)
+
+
+class NoPathException(Exception):
+    pass
+
+
+def bfs_shortest_path(graph, start, goal):
+    visited = set()
+    queue = [(start, [start])]
+
+    while queue:
+        (vertex, path) = queue.pop(0)
+        if vertex in visited:
+            continue
+
+        for neighbor in graph.nodes[vertex]:
+            if neighbor == goal:
+                return path + [neighbor]
+            else:
+                queue.append((neighbor, path + [neighbor]))
+
+        visited.add(vertex)
+
+    raise NoPathException("No path found")
+
+
 def find_shortest_path_length(incoming_bytes: list[tuple[int, int]]) -> int:
     X_LEN, Y_LEN = 71, 71
     DIRECTIONS = ((-1, 0), (0, -1), (1, 0), (0, 1))
 
-    g = networkx.Graph()
+    g = Graph()
 
     for x in range(X_LEN):
         for y in range(Y_LEN):
@@ -30,7 +66,7 @@ def find_shortest_path_length(incoming_bytes: list[tuple[int, int]]) -> int:
                 ):
                     g.add_edge((x, y), new_point)
 
-    shortest_path = networkx.shortest_path(g, (0, 0), (X_LEN - 1, Y_LEN - 1))
+    shortest_path = bfs_shortest_path(g, (0, 0), (X_LEN - 1, Y_LEN - 1))
 
     return len(shortest_path)
 
@@ -47,7 +83,7 @@ while min_bytes != max_bytes:
     try:
         path_length = find_shortest_path_length(incoming_bytes[:nb_bytes]) - 1
         min_bytes = nb_bytes + 1
-    except networkx.exception.NetworkXNoPath as err:
+    except NoPathException as err:
         print(err)
         max_bytes = nb_bytes
 
