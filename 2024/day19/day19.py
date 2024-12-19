@@ -25,4 +25,4 @@ for instruction in instruction_list:
     if is_stripes_possible(stripes_to_find, towel_stock):
         total += 1
 
-print(total)
+print(f"Part 1: {total}")

@@ -30,13 +30,11 @@ def nb_stripes_possible(
 instruction_list.pop(0)
 
 total_part2 = 0
-# total= {}
 for instruction in instruction_list:
     stripes_to_find = instruction.strip()
 
     new_memory = {}
     nb_stripes = nb_stripes_possible(stripes_to_find, towel_stock, new_memory)
-    # total[stripes_to_find] = nb_stripes
     total_part2 += nb_stripes
 
-print(total_part2)
+print(f"Part 2: {total_part2}")
