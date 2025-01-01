@@ -1,5 +1,4 @@
 from collections import defaultdict
-import copy
 
 with open("./2024/day23/input.txt", encoding="utf-8") as f:
     instruction_list: list[str] = f.readlines()
@@ -14,63 +13,42 @@ for instruction in instruction_list:
 ring_list = []
 for comp1, comp_list in connexions.items():
     # if comp1[0] == "t":
-    ring_list += [[comp1, comp2] for comp2 in comp_list]
+    ring_list += [{comp1, comp2} for comp2 in comp_list]
 
+tiple_ring = []
+for comp_seq in ring_list:
+    for neighbor in connexions[list(comp_seq)[0]]:
+        if connexions[neighbor].intersection(comp_seq) == comp_seq:
+            tiple_ring.append(comp_seq | {neighbor})
 
-while not all(
-    [comp_seq[-1] == comp_seq[0] or len(comp_seq) > 3 for comp_seq in ring_list]
-):
-    print(len(ring_list))
-    comp_seq = ring_list.pop(0)
-    if comp_seq[-1] != comp_seq[0]:
-        if len(comp_seq) == 3:
-            for comp in connexions[comp_seq[-1]]:
-                if comp == comp_seq[0]:
-                    ring_list.append(comp_seq + [comp])
-        else:
-            for comp in connexions[comp_seq[-1]]:
-                ring_list.append(comp_seq + [comp])
-    else:
-        ring_list.append(comp_seq)
+all_comp_t = {k for k in connexions.keys() if k[0] == "t"}  #
 
-all_comp_t = {k for k in connexions.keys()}  #  if k[0] == "t"
-
-ring_list = [
-    comp_seq
-    for comp_seq in ring_list
-    if comp_seq[0] == comp_seq[-1] and len(comp_seq) == 4
-]
-ring_list = set(
+ring_list_t = set(
     frozenset(comp_seq)
-    for comp_seq in ring_list
+    for comp_seq in tiple_ring
     if set(comp_seq).intersection(all_comp_t)
 )
 
-print(f"Part 1: {len(ring_list)}")
+print(f"Part 1: {len(ring_list_t)}")
 
-fully_connected_neighbours_found = True
 
-while ring_list:
-    fully_connected_neighbours_found = False
-    tmp = copy.deepcopy(ring_list)
-    print(len(ring_list))
-    new_ring_list = []
-    for seq in ring_list:
-        for computer in seq:
-            for neigboor in connexions[computer]:
-                if (
-                    neigboor not in seq
-                    and connexions[neigboor].intersection(seq) == seq
-                ):
-                    tmp = set(seq)
-                    tmp.add(neigboor)
-                    new_ring_list.append(tmp)
+max_seq_length_found = (3, "")
 
-    if not new_ring_list:
-        ring_list = set(frozenset(comp_seq) for comp_seq in tmp)
-        break
+ring_dict = {min(seq): seq for seq in tiple_ring}
 
-    ring_list = set(frozenset(comp_seq) for comp_seq in new_ring_list)
+for element in ring_dict.keys():
+    # Just need to check 1 computer
+    # (to see if its neighbors are connected with other computer of the ring)
+    for neigboor in connexions[element]:
+        seq = ring_dict[element]
+        connected_neighbor_found = False
+        if neigboor not in seq and connexions[neigboor].intersection(seq) == seq:
+            seq |= {neigboor}
+            connected_neighbor_found = True
 
-print(f"Part 2: {",".join(sorted([seq for seq in ring_list][0]))}")
-print(ring_list)
+        if connected_neighbor_found:
+            ring_dict[element] = seq
+            if len(seq) > max_seq_length_found[0]:
+                max_seq_length_found = (len(seq), element)
+
+print(f"Part 2: {",".join(sorted(ring_dict[max_seq_length_found[1]]))}")
