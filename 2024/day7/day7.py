@@ -1,13 +1,14 @@
 import re
+import pathlib
 
-with open("./2024/day7/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
 
-eq = []
-for instruction in instruction_list:
-    # print(instruction)
-    res, nbs = re.search(r"(\d*): (.*)", instruction).groups()
-    eq.append((int(res), [int(nb) for nb in nbs.split(" ")]))
+def parse_data(instruction_list):
+    eq = []
+    for instruction in instruction_list:
+        res, nbs = re.search(r"(\d*): (.*)", instruction).groups()
+        eq.append((int(res), [int(nb) for nb in nbs.split(" ")]))
+
+    return eq
 
 
 def get_combinations(nb_list: list[int]) -> list[int]:
@@ -28,25 +29,46 @@ def get_combinations_part2(nb_list: list[int]) -> list[int]:
     res = (
         [nb_list[-1] + nb for nb in get_combinations_part2(nb_list[:-1])]
         + [nb_list[-1] * nb for nb in get_combinations_part2(nb_list[:-1])]
-        + [int(str(nb) + str(nb_list[-1])) for nb in get_combinations_part2(nb_list[:-1])]
+        + [
+            int(str(nb) + str(nb_list[-1]))
+            for nb in get_combinations_part2(nb_list[:-1])
+        ]
     )
 
     return res
 
 
-nb_possibilities = 0
-for res, nbs in eq:
-    comb = get_combinations(nbs)
-    if res in comb:
-        nb_possibilities += res
-        eq.remove((res, nbs))
+def part1(instruction_list):
+    eq = parse_data(instruction_list)
 
-print(f"Part 1: {nb_possibilities}")
+    total_calibration = 0
+    for res, nbs in eq:
+        comb = get_combinations(nbs)
+        if res in comb:
+            total_calibration += res
 
-nb_possibilities = 0
-for res, nbs in eq:
-    comb = get_combinations_part2(nbs)
-    if res in comb:
-        nb_possibilities += res
+    print(f"Part 1: {total_calibration}")
+    return total_calibration
 
-print(f"Part 2: {nb_possibilities}")
+
+def part2(instruction_list):
+    eq = parse_data(instruction_list)
+
+    total_calibration = 0
+    for res, nbs in eq:
+        comb = get_combinations_part2(nbs)
+        if res in comb:
+            total_calibration += res
+
+    print(f"Part 2: {total_calibration}")
+    return total_calibration
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part1(instruction_list)
+    part2(instruction_list)

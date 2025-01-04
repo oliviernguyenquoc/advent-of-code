@@ -1,4 +1,7 @@
 import math
+import itertools
+from collections import defaultdict
+import pathlib
 
 
 def mix(nb1: int, nb2: int) -> int:
@@ -22,15 +25,56 @@ def hash(secret_nb: int) -> int:
     return secret_nb
 
 
-with open("./2024/day22/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
+def solve(instruction_list, part=1):
+    all_secret_nb_seq = []
+    res_part1 = []
+    for instruction in instruction_list:
+        nb = int(instruction.strip())
+        buyer_sn = [nb]
+        for _ in range(2000):
+            nb = hash(nb)
+            buyer_sn.append(nb)
 
-res = []
-for instruction in instruction_list:
-    nb = int(instruction.strip())
-    for _ in range(2000):
-        nb = hash(nb)
+        res_part1.append(nb)
+        all_secret_nb_seq.append(buyer_sn)
 
-    res.append(nb)
+    if part == 1:
+        print(f"Part 1: {sum(res_part1)}")
+        return sum(res_part1)
 
-print(sum(res))
+    all_diffs = []
+    for secret_nb_seq in all_secret_nb_seq:
+        all_diffs.append(
+            [0]
+            + [
+                int(str(nb2)[-1]) - int(str(nb1)[-1])
+                for nb1, nb2 in itertools.pairwise(secret_nb_seq)
+            ]
+        )
+
+    four_seq_mem = defaultdict(int)
+    for secret_nb_seq, diff_seq in zip(all_secret_nb_seq, all_diffs):
+        tmp_mem = {}
+        for i in range(len(diff_seq) - 3):
+            searched_seq = (
+                diff_seq[i],
+                diff_seq[i + 1],
+                diff_seq[i + 2],
+                diff_seq[i + 3],
+            )
+            if searched_seq not in tmp_mem:
+                four_seq_mem[searched_seq] += int(str(secret_nb_seq[i + 3])[-1])
+                tmp_mem[searched_seq] = True
+
+    print(f"Part 2: {max(four_seq_mem.values())}")
+    return max(four_seq_mem.values())
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    solve(instruction_list, part=1)
+    solve(instruction_list, part=2)

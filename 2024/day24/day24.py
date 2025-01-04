@@ -5,6 +5,7 @@ import tqdm
 
 # import graphviz
 import random
+import pathlib
 
 
 class InfiniteLoopError(Exception):
@@ -14,7 +15,7 @@ class InfiniteLoopError(Exception):
 def get_operations_results(
     instruct_list: list[tuple[str, str, str, str]], bit_dict: dict[str, int]
 ):
-    iteration_limit = 10000
+    iteration_limit = 5000
     iteration_count = 0
 
     instruct_tmp = copy.deepcopy(instruct_list)
@@ -138,93 +139,120 @@ def generate_combinations(instruct_list_init):
     return all_combinations
 
 
-with open("./2024/day24/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
+def parse_data(instruction_list):
+    bit_dict_init = {}
 
-bit_dict_init = {}
-
-instruction = instruction_list.pop(0)
-
-while instruction != "\n":
-    bit_name, bit_nb = re.search(r"([a-z0-9]+): (\d+)", instruction).groups()
-    bit_dict_init[bit_name] = int(bit_nb)
     instruction = instruction_list.pop(0)
 
-instruct_list_init = []
-while instruction_list:
-    instruction = instruction_list.pop(0)
-    bit1, op, bit2, bit_res = re.search(
-        r"([a-z0-9]+) (XOR|OR|AND) ([a-z0-9]+) -> ([a-z0-9]+)", instruction
-    ).groups()
-    instruct_list_init.append((bit1, op, bit2, bit_res))
+    while instruction != "\n":
+        bit_name, bit_nb = re.search(r"([a-z0-9]+): (\d+)", instruction).groups()
+        bit_dict_init[bit_name] = int(bit_nb)
+        instruction = instruction_list.pop(0)
 
-# print(len(instruct_list))
-bit_dict = copy.deepcopy(bit_dict_init)
-bit_dict = get_operations_results(instruct_list_init, bit_dict)
-z = compute_number(bit_dict, "z")
+    instruct_list_init = []
+    while instruction_list:
+        instruction = instruction_list.pop(0)
+        bit1, op, bit2, bit_res = re.search(
+            r"([a-z0-9]+) (XOR|OR|AND) ([a-z0-9]+) -> ([a-z0-9]+)", instruction
+        ).groups()
+        instruct_list_init.append((bit1, op, bit2, bit_res))
+
+    return bit_dict_init, instruct_list_init
 
 
-print(f"Part 1: {z}")
+def part1(instruction_list):
+    bit_dict_init, instruct_list_init = parse_data(instruction_list)
 
-all_combinations = generate_combinations(instruct_list_init)
-
-last_swap_combinations_to_test = set()
-for swap_combination in tqdm.tqdm(all_combinations):
+    # print(len(instruct_list))
     bit_dict = copy.deepcopy(bit_dict_init)
-
-    swapped_instruct_list = copy.deepcopy(instruct_list_init)
-
-    all_rules = set()
-    for rule1_gate, rule2_gate in swap_combination:
-        swapped_instruct_list = swap(swapped_instruct_list, rule1_gate, rule2_gate)
-
-    try:
-        bit_dict = get_operations_results(swapped_instruct_list, bit_dict)
-    except InfiniteLoopError:
-        continue
-
+    bit_dict = get_operations_results(instruct_list_init, bit_dict)
     z = compute_number(bit_dict, "z")
-    x = compute_number(bit_dict, "x")
-    y = compute_number(bit_dict, "y")
 
-    # Check if result is correct with current bit initialization
-    if bin(x + y) == bin(z):  # Remplacez par la valeur attendue si connue
-        print(
-            f"Possible solution found : {",".join(sorted([wires[3] for swap_found in swap_combination for wires in swap_found ]))}"
-        )
-        last_swap_combinations_to_test.add(swap_combination)
-        continue
-    # else:
-    #     print("----")
-    #     print(swap_combination)
-    #     print(
-    #         f"x: {x}, y: {y}, \n x+y: {bin(x+y)}, \n z:   {bin(z)}, \n XOR:    {bin((x+y)^z)}"
-    #     )
+    print(f"Part 1: {z}")
+    return z
 
-for swap_combination in last_swap_combinations_to_test:
-    good_combination = True
-    for i in range(6):
-        bit_dict_init_tmp = copy.deepcopy(bit_dict_init)
-        # Let's try different combination
-        for bit in bit_dict_init_tmp.keys():
-            bit_dict_init_tmp[bit] = random.choice([0, 1])
+
+def part2(instruction_list):
+    bit_dict_init, instruct_list_init = parse_data(instruction_list)
+
+    all_combinations = generate_combinations(instruct_list_init)
+
+    last_swap_combinations_to_test = set()
+    for swap_combination in tqdm.tqdm(all_combinations):
+        bit_dict = copy.deepcopy(bit_dict_init)
 
         swapped_instruct_list = copy.deepcopy(instruct_list_init)
+
         for rule1_gate, rule2_gate in swap_combination:
             swapped_instruct_list = swap(swapped_instruct_list, rule1_gate, rule2_gate)
 
-        bit_dict = get_operations_results(swapped_instruct_list, bit_dict_init_tmp)
+        try:
+            bit_dict = get_operations_results(swapped_instruct_list, bit_dict)
+        except InfiniteLoopError:
+            continue
 
         z = compute_number(bit_dict, "z")
         x = compute_number(bit_dict, "x")
         y = compute_number(bit_dict, "y")
 
-        if bin(x + y) != bin(z):
-            good_combination = False
-            break
+        # Check if result is correct with current bit initialization
+        if bin(x + y) == bin(z):  # Remplacez par la valeur attendue si connue
+            print(
+                f"Possible solution found : {",".join(sorted([wires[3] for swap_found in swap_combination for wires in swap_found ]))}"
+            )
+            last_swap_combinations_to_test.add(swap_combination)
+            continue
+        # else:
+        #     print("----")
+        #     print(swap_combination)
+        #     print(
+        #         f"x: {x}, y: {y}, \n x+y: {bin(x+y)}, \n z:   {bin(z)}, \n XOR:    {bin((x+y)^z)}"
+        #     )
 
-    if good_combination:
-        print("Good combination")
-        print(
-            f"Part 2: {",".join(sorted([wires[3] for swap_found in swap_combination for wires in swap_found ]))}"
-        )
+    for swap_combination in last_swap_combinations_to_test:
+        good_combination = True
+        for i in range(6):
+            bit_dict_init_tmp = copy.deepcopy(bit_dict_init)
+            # Let's try different combination
+            for bit in bit_dict_init_tmp.keys():
+                bit_dict_init_tmp[bit] = random.choice([0, 1])
+
+            swapped_instruct_list = copy.deepcopy(instruct_list_init)
+            for rule1_gate, rule2_gate in swap_combination:
+                swapped_instruct_list = swap(
+                    swapped_instruct_list, rule1_gate, rule2_gate
+                )
+
+            bit_dict = get_operations_results(swapped_instruct_list, bit_dict_init_tmp)
+
+            z = compute_number(bit_dict, "z")
+            x = compute_number(bit_dict, "x")
+            y = compute_number(bit_dict, "y")
+
+            if bin(x + y) != bin(z):
+                good_combination = False
+                break
+
+        if good_combination:
+            print("Good combination")
+            res = ",".join(
+                sorted(
+                    [
+                        wires[3]
+                        for swap_found in swap_combination
+                        for wires in swap_found
+                    ]
+                )
+            )
+            print(f"Part 2: {res}")
+            return res
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part1(instruction_list)
+    part2(instruction_list)

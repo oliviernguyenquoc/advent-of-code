@@ -1,7 +1,5 @@
 import re
-
-with open("./2024/day17/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
+import pathlib
 
 # Register A: 0
 # Register B: 2024
@@ -9,13 +7,19 @@ with open("./2024/day17/input.txt", encoding="utf-8") as f:
 
 # Program: 4,0
 
-a = re.search(r"Register A: (\d+)", instruction_list[0].strip()).groups()[0]
-b = re.search(r"Register B: (\d+)", instruction_list[1].strip()).groups()[0]
-c = re.search(r"Register C: (\d+)", instruction_list[2].strip()).groups()[0]
-program_str = re.search(r"Program: ([0-9,]+)", instruction_list[4].strip()).groups()[0]
 
-program = [int(p) for p in program_str.split(",")]
-a, b, c = int(a), int(b), int(c)
+def parse_data(instruction_list):
+    a = re.search(r"Register A: (\d+)", instruction_list[0].strip()).groups()[0]
+    b = re.search(r"Register B: (\d+)", instruction_list[1].strip()).groups()[0]
+    c = re.search(r"Register C: (\d+)", instruction_list[2].strip()).groups()[0]
+    program_str = re.search(
+        r"Program: ([0-9,]+)", instruction_list[4].strip()
+    ).groups()[0]
+
+    program = [int(p) for p in program_str.split(",")]
+    a, b, c = int(a), int(b), int(c)
+
+    return program, a, b, c
 
 
 def run_program(
@@ -61,18 +65,37 @@ def run_program(
     return output
 
 
-output = run_program(program, a, b, c)
+def part1(instruction_list):
+    program, a, b, c = parse_data(instruction_list)
+    output = run_program(program, a, b, c)
 
-print(f"Program: {program}")
-print(f"Part 1: {",".join(map(str, output))}")
+    print(f"Program: {program}")
+    print(f"Part 1: {",".join(map(str, output))}")
 
-# Just shift to 3 digits (binary)
-A = 0
-for i in reversed(range(len(program))):
-    print(i, A, program[i:])
-    A <<= 3
-    while run_program(program, A, 0, 0) != program[i:]:
-        A += 1
+    return ",".join(map(str, output))
 
-print(f"Program: {program}")
-print(f"Part 2: {A}")
+
+def part2(instruction_list):
+    program, a, b, c = parse_data(instruction_list)
+
+    # Just shift to 3 digits (binary)
+    A = 0
+    for i in reversed(range(len(program))):
+        print(i, A, program[i:])
+        A <<= 3
+        while run_program(program, A, 0, 0) != program[i:]:
+            A += 1
+
+    print(f"Program: {program}")
+    print(f"Part 2: {A}")
+    return A
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part1(instruction_list)
+    part2(instruction_list)

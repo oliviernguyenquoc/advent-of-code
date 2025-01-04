@@ -1,7 +1,4 @@
-with open("./2024/day19/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
-
-towel_stock = set(instruction_list.pop(0).strip().split(", "))
+import pathlib
 
 
 def is_stripes_possible(stripes_to_find: str, towel_stock: set[str]) -> bool:
@@ -15,14 +12,27 @@ def is_stripes_possible(stripes_to_find: str, towel_stock: set[str]) -> bool:
     return False
 
 
-# Skip empty line
-instruction_list.pop(0)
+def part1(instruction_list):
+    towel_stock = set(instruction_list.pop(0).strip().split(", "))
 
-total = 0
-for instruction in instruction_list:
-    stripes_to_find = instruction.strip()
+    # Skip empty line
+    instruction_list.pop(0)
 
-    if is_stripes_possible(stripes_to_find, towel_stock):
-        total += 1
+    total = 0
+    for instruction in instruction_list:
+        stripes_to_find = instruction.strip()
 
-print(f"Part 1: {total}")
+        if is_stripes_possible(stripes_to_find, towel_stock):
+            total += 1
+
+    print(f"Part 1: {total}")
+    return total
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part1(instruction_list)

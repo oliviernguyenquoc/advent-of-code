@@ -1,4 +1,6 @@
 from collections import defaultdict
+from tqdm import tqdm
+import copy
 
 
 def test_loop(
@@ -27,7 +29,7 @@ def test_loop(
                 position_y + DIRECTIONS[i][1],
             )
             not in obstacle_list
-            and (0 <= position_x  < len(grid[0]) and 0 <= position_y < len(grid))
+            and (0 <= position_x < len(grid[0]) and 0 <= position_y < len(grid))
             and (
                 not is_checking
                 or any([not check for check in checking_position.values()])
@@ -58,8 +60,9 @@ def test_loop(
         checking_position,
     )
 
+
 with open("./2024/day6/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.read().splitlines()
+    instruction_list: list[str] = f.readlines()
 
 grid = [instruction.strip() for instruction in instruction_list]
 
@@ -75,13 +78,13 @@ is_loop, position_visited = test_loop(grid, obstacle_list, start_x, start_y)
 
 print(f"Part 1: {len(position_visited)}")
 
-possible_obstacle_list = position_visited
+possible_obstacle_list = copy.deepcopy(position_visited)
 
 print(f"{len(possible_obstacle_list)} points to check")
 
 nb_possible_obstacle_loop = 0
-for i, (x, y) in enumerate(possible_obstacle_list):
-    print(f"Point n°{i}: ({x}, {y})")
+for i, (x, y) in tqdm(enumerate(possible_obstacle_list)):
+    # print(f"Point n°{i}: ({x}, {y})")
     is_loop, position_visited = test_loop(
         grid,
         obstacle_list=obstacle_list + [(x, y)],

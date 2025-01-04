@@ -1,31 +1,5 @@
 from collections import defaultdict
-
-with open("./2024/day15/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
-
-y = 0
-walls_x, walls_y = defaultdict(list), defaultdict(list)
-global boxes
-boxes = set()
-robot = (0, 0)
-
-while instruction_list[y] != "\n":
-    for x, char in enumerate(instruction_list[y].strip()):
-        match char:
-            case "#":
-                walls_x[x].append(y)
-                walls_y[y].append(x)
-            case "O":
-                boxes.add((x, y))
-            case "@":
-                robot = (x, y)
-    y += 1
-
-
-[walls_x[x].sort() for x in walls_x.keys()]
-[walls_y[y].sort() for y in walls_y.keys()]
-
-moves = "".join([instruction.strip() for instruction in instruction_list[y + 1 :]])
+import pathlib
 
 
 def move_robot(
@@ -61,26 +35,60 @@ def move_robot(
     return robot
 
 
-for move in moves:
-    match move:
-        case "<":
-            direction = (-1, 0)
-            robot = move_robot(robot, direction, walls_y, 0)
+def part1(instruction_list):
+    y = 0
+    walls_x, walls_y = defaultdict(list), defaultdict(list)
+    global boxes
+    boxes = set()
+    robot = (0, 0)
 
-        case ">":
-            direction = (1, 0)
-            robot = move_robot(robot, direction, walls_y, 0)
+    while instruction_list[y] != "\n":
+        for x, char in enumerate(instruction_list[y].strip()):
+            match char:
+                case "#":
+                    walls_x[x].append(y)
+                    walls_y[y].append(x)
+                case "O":
+                    boxes.add((x, y))
+                case "@":
+                    robot = (x, y)
+        y += 1
 
-        case "^":
-            direction = (0, -1)
-            robot = move_robot(robot, direction, walls_x, 1)
+    [walls_x[x].sort() for x in walls_x.keys()]
+    [walls_y[y].sort() for y in walls_y.keys()]
 
-        case "v":
-            direction = (0, 1)
-            robot = move_robot(robot, direction, walls_x, 1)
+    moves = "".join([instruction.strip() for instruction in instruction_list[y + 1 :]])
 
-total = 0
-for x, y in boxes:
-    total += x + 100 * y
+    for move in moves:
+        match move:
+            case "<":
+                direction = (-1, 0)
+                robot = move_robot(robot, direction, walls_y, 0)
 
-print(f"Part1: {total}")
+            case ">":
+                direction = (1, 0)
+                robot = move_robot(robot, direction, walls_y, 0)
+
+            case "^":
+                direction = (0, -1)
+                robot = move_robot(robot, direction, walls_x, 1)
+
+            case "v":
+                direction = (0, 1)
+                robot = move_robot(robot, direction, walls_x, 1)
+
+    total = 0
+    for x, y in boxes:
+        total += x + 100 * y
+
+    print(f"Part1: {total}")
+    return total
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part1(instruction_list)

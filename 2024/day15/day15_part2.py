@@ -1,37 +1,5 @@
 from collections import defaultdict
-
-with open("./2024/day15/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
-
-walls_x, walls_y = defaultdict(list), defaultdict(list)
-global boxes
-boxes = set()
-robot = (0, 0)
-y = 0
-
-while instruction_list[y] != "\n":
-    for x, char in enumerate(instruction_list[y].strip()):
-        match char:
-            case "#":
-                walls_x[2 * x].append(y)
-                walls_x[2 * x + 1].append(y)
-                walls_y[y] += [2 * x, 2 * x + 1]
-            case "O":
-                boxes.add((2 * x, y))
-            case "@":
-                robot = (2 * x, y)
-    y += 1
-
-global complement_boxes
-# In order to use "]" coordinates
-complement_boxes = set((x + 1, y) for x, y in boxes)
-
-[walls_x[x].sort() for x in walls_x.keys()]
-[walls_y[y].sort() for y in walls_y.keys()]
-
-len_x, len_y = max(walls_x), max(walls_y)
-
-moves = "".join([instruction.strip() for instruction in instruction_list[y + 1 :]])
+import pathlib
 
 
 def move_robot(
@@ -179,33 +147,74 @@ def print_grid(walls_y, len_x, len_y, robot):
         print(line)
 
 
-for move in moves:
-    # print("-----------------")
-    # print_grid(walls_y, len_x, len_y, robot)
-    # print(move)
+def part2(instruction_list):
+    walls_x, walls_y = defaultdict(list), defaultdict(list)
+    global boxes
+    boxes = set()
+    robot = (0, 0)
+    y = 0
 
-    match move:
-        case "<":
-            direction = (-1, 0)
-            robot = move_robot(robot, direction, walls_y, 0)
+    while instruction_list[y] != "\n":
+        for x, char in enumerate(instruction_list[y].strip()):
+            match char:
+                case "#":
+                    walls_x[2 * x].append(y)
+                    walls_x[2 * x + 1].append(y)
+                    walls_y[y] += [2 * x, 2 * x + 1]
+                case "O":
+                    boxes.add((2 * x, y))
+                case "@":
+                    robot = (2 * x, y)
+        y += 1
 
-        case ">":
-            direction = (1, 0)
-            robot = move_robot(robot, direction, walls_y, 0)
+    global complement_boxes
+    # In order to use "]" coordinates
+    complement_boxes = set((x + 1, y) for x, y in boxes)
 
-        case "^":
-            direction = (0, -1)
-            robot = move_robot(robot, direction, walls_x, 1)
+    [walls_x[x].sort() for x in walls_x.keys()]
+    [walls_y[y].sort() for y in walls_y.keys()]
 
-        case "v":
-            direction = (0, 1)
-            robot = move_robot(robot, direction, walls_x, 1)
+    len_x, len_y = max(walls_x), max(walls_y)
 
-print("-----------------")
-print_grid(walls_y, len_x, len_y, robot)
+    moves = "".join([instruction.strip() for instruction in instruction_list[y + 1 :]])
 
-total = 0
-for x, y in boxes:
-    total += x + 100 * y
+    for move in moves:
+        # print("-----------------")
+        # print_grid(walls_y, len_x, len_y, robot)
+        # print(move)
 
-print(f"Part2: {total}")
+        match move:
+            case "<":
+                direction = (-1, 0)
+                robot = move_robot(robot, direction, walls_y, 0)
+
+            case ">":
+                direction = (1, 0)
+                robot = move_robot(robot, direction, walls_y, 0)
+
+            case "^":
+                direction = (0, -1)
+                robot = move_robot(robot, direction, walls_x, 1)
+
+            case "v":
+                direction = (0, 1)
+                robot = move_robot(robot, direction, walls_x, 1)
+
+    print("-----------------")
+    print_grid(walls_y, len_x, len_y, robot)
+
+    total = 0
+    for x, y in boxes:
+        total += x + 100 * y
+
+    print(f"Part 2: {total}")
+    return total
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part2(instruction_list)

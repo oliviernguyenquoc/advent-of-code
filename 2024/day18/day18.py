@@ -1,17 +1,26 @@
 import networkx
+import pathlib
 
-with open("./2024/day18/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
 
-incoming_bytes = []
+def set_dimensions(is_test: bool):
+    global X_LEN, Y_LEN
+    if is_test:
+        X_LEN, Y_LEN = 7, 7
+    else:
+        X_LEN, Y_LEN = 71, 71
 
-for i, instruction in enumerate(instruction_list):
-    x_str, y_str = instruction.strip().split(",")
-    incoming_bytes.append((int(x_str), int(y_str)))
+
+def parse_data(instruction_list):
+    incoming_bytes = []
+
+    for i, instruction in enumerate(instruction_list):
+        x_str, y_str = instruction.strip().split(",")
+        incoming_bytes.append((int(x_str), int(y_str)))
+
+    return incoming_bytes
 
 
 def find_shortest_path_length(incoming_bytes: list[tuple[int, int]]) -> int:
-    X_LEN, Y_LEN = 71, 71
     DIRECTIONS = ((-1, 0), (0, -1), (1, 0), (0, 1))
 
     g = networkx.Graph()
@@ -35,24 +44,57 @@ def find_shortest_path_length(incoming_bytes: list[tuple[int, int]]) -> int:
     return len(shortest_path)
 
 
-NB_BYTES = 12
-print(f"Part 1: {find_shortest_path_length(incoming_bytes[:NB_BYTES]) - 1}")
+def part1(instruction_list, is_test):
+    if is_test:
+        NB_BYTES = 12
+    else:
+        NB_BYTES = 1024
+    set_dimensions(is_test)
 
-max_bytes = len(incoming_bytes)
-min_bytes = NB_BYTES + 1
+    incoming_bytes = parse_data(instruction_list)
 
-while min_bytes != max_bytes:
-    nb_bytes = min_bytes + (max_bytes - min_bytes) // 2
-    print(f"Searching in [{min_bytes}, {max_bytes}]. Let's try: {nb_bytes}")
-    try:
-        path_length = find_shortest_path_length(incoming_bytes[:nb_bytes]) - 1
-        min_bytes = nb_bytes + 1
-    except networkx.exception.NetworkXNoPath as err:
-        print(err)
-        max_bytes = nb_bytes
+    result = find_shortest_path_length(incoming_bytes[:NB_BYTES]) - 1
+
+    print(f"Part 1: {result}")
+    return result
 
 
-print(
-    f"First byte to make the exit blocked is the number {min_bytes}: {incoming_bytes[nb_bytes]}"
-)
-print(f"Part 2: {incoming_bytes[nb_bytes][0]},{incoming_bytes[nb_bytes][1]}")
+def part2(instruction_list, is_test):
+    if is_test:
+        NB_BYTES = 12
+    else:
+        NB_BYTES = 1024
+    set_dimensions(is_test)
+
+    incoming_bytes = parse_data(instruction_list)
+
+    max_bytes = len(incoming_bytes)
+    min_bytes = NB_BYTES + 1
+
+    while min_bytes != max_bytes:
+        nb_bytes = min_bytes + (max_bytes - min_bytes) // 2
+        print(f"Searching in [{min_bytes}, {max_bytes}]. Let's try: {nb_bytes}")
+        try:
+            find_shortest_path_length(incoming_bytes[:nb_bytes]) - 1
+            min_bytes = nb_bytes + 1
+        except networkx.exception.NetworkXNoPath as err:
+            print(err)
+            max_bytes = nb_bytes
+
+    print(
+        f"First byte to make the exit blocked is the number {min_bytes}: {incoming_bytes[nb_bytes]}"
+    )
+    print(f"Part 2: {incoming_bytes[nb_bytes][0]},{incoming_bytes[nb_bytes][1]}")
+    return f"{incoming_bytes[nb_bytes][0]},{incoming_bytes[nb_bytes][1]}"
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    IS_TEST = True
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    part1(instruction_list, IS_TEST)
+    part2(instruction_list, IS_TEST)

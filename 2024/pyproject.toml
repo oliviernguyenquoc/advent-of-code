@@ -9,7 +9,13 @@ dependencies = [
     "matplotlib>=3.10.0",
     "networkx>=3.4.2",
     "numpy>=2.2.0",
-    "pytest>=8.3.3",
     "ruff>=0.8.0",
     "tqdm>=4.67.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest-timeout>=2.3.1",
+    "pytest>=8.3.3",
+    "rich>=13.9.4",
 ]
