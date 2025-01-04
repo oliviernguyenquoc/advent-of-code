@@ -1,11 +1,10 @@
-""" Version 2 with formal bits operation: Much better !"""
+"""Version 2 with formal bits operation: Much better !"""
 
 import re
 from typing import List
 
 
 def modify_bits_part1(mask: str, bit_value: str) -> int:
-
     bit_level = 0
 
     for bit in reversed(mask):
@@ -13,9 +12,9 @@ def modify_bits_part1(mask: str, bit_value: str) -> int:
             last_bit = bit_value >> bit_level
             if (last_bit & 0b1) != int(bit, 2):
                 if (last_bit & 0b1) == 0b0:
-                    bit_value += 2 ** bit_level
+                    bit_value += 2**bit_level
                 else:
-                    bit_value -= 2 ** bit_level
+                    bit_value -= 2**bit_level
 
         bit_level += 1
 
@@ -23,25 +22,23 @@ def modify_bits_part1(mask: str, bit_value: str) -> int:
 
 
 def modify_bits_part2(mask: str, bit_value: str) -> List[int]:
-
     bit_level = 0
     possible_value_list = [bit_value]
 
     for bit in reversed(mask):
-
         if bit == "1":
             for i, possible_value in enumerate(possible_value_list):
                 if ((possible_value >> bit_level) & 0b1) == 0b0:
-                    possible_value_list[i] = possible_value + 2 ** bit_level
+                    possible_value_list[i] = possible_value + 2**bit_level
 
         if bit == "X":
             tmp_list = possible_value_list.copy()
 
             for possible_value in possible_value_list:
                 if ((possible_value >> bit_level) & 0b1) == 0b0:
-                    tmp_list.append(possible_value + 2 ** bit_level)
+                    tmp_list.append(possible_value + 2**bit_level)
                 else:
-                    tmp_list.append(possible_value - 2 ** bit_level)
+                    tmp_list.append(possible_value - 2**bit_level)
 
             possible_value_list = tmp_list
 

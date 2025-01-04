@@ -3,7 +3,7 @@ import statistics
 with open("./day07/input.txt") as f:
     instruction_list = f.read().splitlines()
 
-position_list = [int(instruction) for instruction in instruction_list[0].split(',')]
+position_list = [int(instruction) for instruction in instruction_list[0].split(",")]
 
 median_position = int(statistics.median(position_list))
 

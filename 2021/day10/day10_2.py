@@ -9,7 +9,7 @@ points_dict = {")": 1, "]": 2, "}": 3, ">": 4}
 char_dict = {")": "(", "]": "[", ">": "<", "}": "{"}
 reverse_char_dict = {reverse_char: char for char, reverse_char in char_dict.items()}
 
-remaining_list= []
+remaining_list = []
 
 for instruction in instruction_list:
     is_illegal_line: bool = False
@@ -27,7 +27,7 @@ for instruction in instruction_list:
 
     if not is_illegal_line:
         remaining_list.append([reverse_char_dict[char] for char in char_list[::-1]])
-    
+
 score_list = []
 
 for remain_str in remaining_list:
@@ -35,7 +35,7 @@ for remain_str in remaining_list:
     for char in remain_str:
         score *= 5
         score += points_dict[char]
-    
+
     score_list.append(score)
 
 print(statistics.median(score_list))

@@ -36,7 +36,6 @@ def _multiplier(n: int) -> int:
 
 
 def count_combination_adaptator(adaptator_list: List[int]) -> int:
-
     nb_combination = 1
     adaptator_list = sorted(adaptator_list)
     adaptator_list = [0] + adaptator_list + [adaptator_list[-1] + 3]

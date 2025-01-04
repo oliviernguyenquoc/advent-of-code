@@ -17,13 +17,15 @@ rock_tilt = []
 
 while rock_list:
     x, y = rock_list.pop(0)
-    while y-1 >= 0 and (x, y - 1) not in rock_tilt and (x, y - 1) not in cube_rock_list:
+    while (
+        y - 1 >= 0 and (x, y - 1) not in rock_tilt and (x, y - 1) not in cube_rock_list
+    ):
         y -= 1
     rock_tilt.append((x, y))
 
 total = 0
 x_len, y_len = len(grid[0]), len(grid)
 for x, y in rock_tilt:
-    total += (y_len - y)
+    total += y_len - y
 
 print(total)

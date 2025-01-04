@@ -66,7 +66,6 @@ class Map:
 
         return start_list
 
-
     def sort(self):
         self.range_list.sort(key=lambda x: x.destination_range_start)
 
@@ -105,28 +104,25 @@ class Map:
                 break
 
         return maping
-    
-    def get_split_points(self, begin: int, end:int)->list[tuple[int, int]]:
+
+    def get_split_points(self, begin: int, end: int) -> list[tuple[int, int]]:
         split_points = set()
         for range in self.range_list:
             if begin < range.destination_range_start < end:
-                split_points.add(range.destination_range_start-1)
+                split_points.add(range.destination_range_start - 1)
                 split_points.add(range.destination_range_start)
             if begin < range.destination_range_end < end:
-                split_points.add(range.destination_range_end-1)
+                split_points.add(range.destination_range_end - 1)
                 split_points.add(range.destination_range_end)
 
         split_points.add(begin)
         split_points.add(end)
         split_points = sorted(split_points)
-        
-        return [(a,b) for a,b in itertools.pairwise(split_points)]
-    
 
+        return [(a, b) for a, b in itertools.pairwise(split_points)]
 
 
 if __name__ == "__main__":
-
     with open("./day5/input.txt", encoding="utf-8") as f:
         instructions: list[str] = f.readlines()
 
@@ -158,7 +154,12 @@ if __name__ == "__main__":
 
     segments: list[tuple[int, int]] = []
     for range_location in map_dict["location"].range_list:
-        segments.append((range_location.destination_range_start, range_location.destination_range_end))
+        segments.append(
+            (
+                range_location.destination_range_start,
+                range_location.destination_range_end,
+            )
+        )
 
         while point != "location":
             while segments:

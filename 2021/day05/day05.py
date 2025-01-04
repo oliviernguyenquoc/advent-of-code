@@ -13,9 +13,7 @@ def generate_set(x1: int, y1: int, x2: int, y2: int) -> Set[Tuple[int, int]]:
     return res
 
 
-def generate_set_with_diag(
-    x1: int, y1: int, x2: int, y2: int
-) -> Set[Tuple[int, int]]:
+def generate_set_with_diag(x1: int, y1: int, x2: int, y2: int) -> Set[Tuple[int, int]]:
     if x1 == x2 or y1 == y2:
         res = {
             (x, y)
@@ -48,6 +46,7 @@ def generate_set_with_diag(
 # xxo (3,1)
 # xox (2,2)
 # oxx (1,3)
+
 
 # Test function
 def test_generate_set():
@@ -98,7 +97,7 @@ for instruction in instruction_list:
     # line_set = generate_set(x1, y1, x2, y2) # PART 1
     line_set = generate_set_with_diag(x1, y1, x2, y2)
 
-    for (x, y) in line_set:
+    for x, y in line_set:
         if (x, y) in grid:
             grid[(x, y)] += 1
         else:

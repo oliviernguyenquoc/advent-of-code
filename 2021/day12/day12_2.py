@@ -22,7 +22,6 @@ path_tuple_list = [
 old_all_path_list: List[List[str]] = []
 
 while old_all_path_list != all_path_list:
-
     old_all_path_list = []
     for path in all_path_list:
         if path[-1] == "end" or path not in all_path_list:

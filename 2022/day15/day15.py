@@ -53,7 +53,7 @@ class Environment:
                 (sensor_x + i + distance, sensor_y + i),
             ]
 
-        for (i, j) in all_edge_points:
+        for i, j in all_edge_points:
             if X_MIN < i < X_MAX and Y_MIN < j < Y_MAX:
                 if (i, j) not in self.points:
                     self.points[(i, j)] = "?"

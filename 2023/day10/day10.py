@@ -1,5 +1,6 @@
 import dataclasses
 
+
 @dataclasses.dataclass
 class Position:
     grid: list[str]
@@ -134,7 +135,7 @@ for y in range(len(grid)):
                         enable_in[x] = not enable_in[x]
                     elif memory_7L[x]:
                         memory_7L[x] = False
-                
+
                 # Because in my case, it should be a 7
                 case "S":
                     memory_7L[x] = True

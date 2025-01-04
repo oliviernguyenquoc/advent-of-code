@@ -4,7 +4,6 @@ from typing import List, Tuple
 def list_seats_arround_part1(
     position_list: list, seat_list: List[str], x: int, y: int, i: int, j: int
 ):
-
     if (
         x + i >= 0
         and x + i < len(seat_list)
@@ -20,7 +19,6 @@ def list_seats_arround_part1(
 def list_seats_arround_part2(
     position_list: list, seat_list: List[str], x: int, y: int, i: int, j: int
 ):
-
     position_i = i
     position_j = j
 
@@ -43,7 +41,6 @@ def list_seats_arround_part2(
 def apply_rules_for_one_seat(
     seat_list: List[str], x: int, y: int, part: int = 1
 ) -> Tuple[str, int, int]:
-
     if seat_list[x][y] == ".":
         return None
 
@@ -84,7 +81,6 @@ def apply_rules_for_one_seat(
 
 
 def iteration(seat_list: List[str], part: int = 1) -> List[str]:
-
     change_to_apply = []
     for x, seat_row in enumerate(seat_list):
         for y, _ in enumerate(seat_row):

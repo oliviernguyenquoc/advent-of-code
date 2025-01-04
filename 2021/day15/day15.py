@@ -52,6 +52,7 @@ print(f"Shortest path from begin to end: {shortest_path}")
 print(f"Shortest path weights from begin to end: {shortest_path_weights}")
 print(f"Length of the shortest path: {length}")
 
+
 def draw_graph(G, shortest_path):
     pos = nx.get_node_attributes(G, "pos")
     nx.draw(G, pos)

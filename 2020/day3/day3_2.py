@@ -19,6 +19,6 @@ for direction in direction_list:
     nb_tree_list.append(nb_tree)
 
 print(nb_tree_list)
-print(reduce((lambda x,y: x*y), nb_tree_list))
+print(reduce((lambda x, y: x * y), nb_tree_list))
 
 f.close()

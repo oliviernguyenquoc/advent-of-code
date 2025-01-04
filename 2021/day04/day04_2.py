@@ -10,7 +10,6 @@ def generate_lists_from_scoreboard(instruction_list) -> List[List[Set[str]]]:
 
     for idx_instruction, instruction in enumerate(instruction_list):
         if instruction == "":
-
             new_card += [
                 set(inst.split())
                 for inst in instruction_list[idx_instruction - 5 : idx_instruction]

@@ -47,7 +47,6 @@ def count_active(coord: List[str]) -> int:
 
 
 def add_dimensions(coord: List[str]) -> List[str]:
-
     coord = (
         [[["." * len(coord[0][0][0])] * len(coord[0][0])] * len(coord[0])]
         + coord
@@ -95,7 +94,6 @@ for _ in range(6):
         for z in range(len(coord[w])):
             for j in range(len(coord[w][z])):
                 for i in range(len(coord[w][z][j])):
-
                     is_two_or_three_active, is_three_active = neighbours_active(
                         old_coord, w, z, j, i
                     )

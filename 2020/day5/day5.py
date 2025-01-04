@@ -11,7 +11,7 @@ for seat in seat_list:
     max_col = 8
 
     for instruction in seat:
-        #print(instruction)
+        # print(instruction)
         if instruction == "F":
             max_row = max_row - ((max_row - min_row) // 2)
         elif instruction == "B":

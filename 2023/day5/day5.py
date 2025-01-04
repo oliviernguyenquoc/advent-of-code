@@ -30,11 +30,13 @@ class Map:
                 )
 
         return nb_to_check
-    
+
     @classmethod
     def read_instructions(cls, instructions: list[str]):
         instruction = instructions.pop(0)
-        source, destination = re.search(r"([^-]*)\-to\-([^-]*) map:", instruction).groups()
+        source, destination = re.search(
+            r"([^-]*)\-to\-([^-]*) map:", instruction
+        ).groups()
 
         maping = cls(source=source, destination=destination, range_list=[])
 
@@ -57,26 +59,22 @@ class Map:
                     range_length=range_length,
                 )
             )
-            
+
             if instructions:
                 instruction = instructions.pop(0)
             else:
                 break
-        
+
         return maping
 
 
 if __name__ == "__main__":
-
     with open("./day5/input.txt", encoding="utf-8") as f:
         instructions: list[str] = f.readlines()
 
     seed_instruction = instructions.pop(0)
     seed_txt = re.search(r"seeds: ([0-9 ]*)", seed_instruction).groups()
-    seeds = [
-        int(seed)
-        for seed in seed_txt[0].split()
-    ]
+    seeds = [int(seed) for seed in seed_txt[0].split()]
 
     map_dict = {}
 
@@ -104,4 +102,3 @@ if __name__ == "__main__":
 
     print(inverted_dict)
     print(min(inverted_dict.keys()))
-    

@@ -7,7 +7,6 @@ nb_bits = len(instruction_list)
 
 
 def get_count_zeros(instruction_list: List[str], idx: int) -> int:
-
     count_zeros = 0
 
     for bit_text in instruction_list:
@@ -19,7 +18,6 @@ def get_count_zeros(instruction_list: List[str], idx: int) -> int:
 
 oxigen_instruction_list = instruction_list
 for i in range(nb_bits):
-
     if get_count_zeros(oxigen_instruction_list, i) > len(oxigen_instruction_list) / 2:
         bit = "0"
     else:

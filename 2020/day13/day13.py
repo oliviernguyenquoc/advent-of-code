@@ -9,7 +9,7 @@ min_bus = 1000
 min_bus_number = 0
 
 for bus_id in bus_list:
-    if bus_id != 'x' and min_bus > int(bus_id) - (departure % int(bus_id)):
+    if bus_id != "x" and min_bus > int(bus_id) - (departure % int(bus_id)):
         min_bus = int(bus_id) - (departure % int(bus_id))
         min_bus_number = int(bus_id)
 

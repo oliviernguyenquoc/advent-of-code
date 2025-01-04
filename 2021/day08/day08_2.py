@@ -26,7 +26,6 @@ DIGIT_SET = {
 def _test_intersection(
     digit: int, str_to_test: str, local_digit_dict: Dict[int, Set[int]]
 ) -> bool:
-
     return all(
         [
             len(DIGIT_SET[digit].intersection(DIGIT_SET[i]))
@@ -53,7 +52,6 @@ def get_corespondance(input_value_list: str) -> Dict[int, Set[str]]:
 
     while len(local_digit_dict) != 10:
         for group_str in input_value_list:
-
             match len(group_str):
                 case 5:
                     # Could be 2 or 3 or 5

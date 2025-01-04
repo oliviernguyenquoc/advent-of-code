@@ -1,4 +1,4 @@
-f = open('./day2/input.txt')
+f = open("./day2/input.txt")
 
 total_true_password = 0
 
@@ -13,7 +13,7 @@ while True:
     print((min_letter, max_letter, letter, password))
     count_letter = password.count(letter)
     if count_letter >= min_letter and count_letter <= max_letter:
-        total_true_password+=1
+        total_true_password += 1
 
 print(total_true_password)
 f.close()

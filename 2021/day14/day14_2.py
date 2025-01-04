@@ -1,4 +1,3 @@
-from typing import List, Dict
 import tqdm
 
 NB_STEP = 40
@@ -8,7 +7,7 @@ with open("./day14/input.txt") as f:
 
 polymere_template = instruction_list[0]
 
-receipes: Dict[str, str] = {}
+receipes: dict[str, str] = {}
 
 for instruction in instruction_list[2:]:
     duo_letter, insertion_letter = instruction.split(" -> ")
@@ -39,7 +38,7 @@ for duo_letter, insertion_letters in four_step_receipes.items():
     insertion_letter_for_height: str = ""
     for i in range(15):
         insertion_letter_for_height += four_step_receipes[insertion_letters[i : i + 2]]
-    
+
     insertion_letter_for_height += four_step_receipes[
         insertion_letters[15] + duo_letter[1]
     ]
@@ -55,7 +54,7 @@ for step in tqdm.tqdm(range(NB_STEP // 8)):
 
 # print(polymere_template)
 
-count_dict: Dict[str, int] = {}
+count_dict: dict[str, int] = {}
 
 for letter in polymere_template:
     if letter not in count_dict:

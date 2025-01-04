@@ -61,7 +61,7 @@ def check_available_neighbours(grid: list[list[str]], node: Node) -> list[Node]:
 
     POSSIBLE_LETTERS = ALPHABET[: CURRENT_LETTER_IDX + 2]
 
-    for (next_x, next_y) in MOVES:
+    for next_x, next_y in MOVES:
         if (
             0 <= next_x < len(grid[0])
             and 0 <= next_y < len(grid)

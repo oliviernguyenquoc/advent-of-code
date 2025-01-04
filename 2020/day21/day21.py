@@ -39,14 +39,15 @@ for ingredient_set in allergene_dict.values():
 
 print("ingredient_not_safe:", ingredient_not_safe)
 
-print("Part 1:",
+print(
+    "Part 1:",
     len(
         [
             ingredient
             for ingredient in all_ingredient_list
             if ingredient not in ingredient_not_safe
         ]
-    )
+    ),
 )
 
 pprint(sorted(allergene_dict.items()))

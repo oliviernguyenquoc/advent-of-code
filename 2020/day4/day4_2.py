@@ -14,11 +14,8 @@ for passport in passport_list:
 
     valid_passport = True
 
-    
-
     if all(required_field in field_dict for required_field in required_field_list):
         for field, value in field_dict.items():
-            
             if field == "byr":
                 if not (value.isdigit() and int(value) >= 1920 and int(value) <= 2002):
                     valid_passport = False
@@ -58,7 +55,7 @@ for passport in passport_list:
                     valid_passport = False
 
             if field == "ecl":
-                if not (value in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]):
+                if value not in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]:
                     valid_passport = False
 
             if field == "pid":

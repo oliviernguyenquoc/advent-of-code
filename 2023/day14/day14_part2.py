@@ -8,7 +8,6 @@ def tilt(
     y_len: int,
     move: tuple[int, int],
 ) -> list[tuple[int, int]]:
-
     match move:
         case (0, 1):
             rock_list = sorted(rock_list, key=lambda x: x[1], reverse=True)

@@ -40,7 +40,12 @@ def horizontal_comparison_with_smuge(figure: list[str], y: int) -> bool:
             )
     else:
         if (
-            sum([figure[2 * y - len_y : y][i] != figure[y:][::-1][i] for i in range(len_y - y)])
+            sum(
+                [
+                    figure[2 * y - len_y : y][i] != figure[y:][::-1][i]
+                    for i in range(len_y - y)
+                ]
+            )
             == 1
         ):
             return (

@@ -76,7 +76,6 @@ for _ in range(6):
     for z in range(len(coord)):
         for j in range(len(coord[z])):
             for i in range(len(coord[z][j])):
-
                 is_two_or_three_active, is_three_active = neighbours_active(
                     old_coord, z, j, i
                 )

@@ -5,8 +5,7 @@ def game(
     starter_list: List[int],
     stop: int = 2020,
 ) -> int:
-
-    turn_dict = {starter: i+1 for i, starter in enumerate(starter_list)}
+    turn_dict = {starter: i + 1 for i, starter in enumerate(starter_list)}
     last_number = starter_list[-1]
 
     for turn in range(len(starter_list) + 1, stop + 1):

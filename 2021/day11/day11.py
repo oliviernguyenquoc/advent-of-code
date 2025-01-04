@@ -16,7 +16,6 @@ grid_octopus: List[List[int]] = [
 
 
 def _apply_change(grid: List[List[int]], i: int, j: int) -> List[List[int]]:
-
     if 0 < grid[i][j] < 10:
         grid[i][j] += 1
     if grid[i][j] > 9:
@@ -27,7 +26,6 @@ def _apply_change(grid: List[List[int]], i: int, j: int) -> List[List[int]]:
 
 
 def change_neighbours(grid: List[List[int]], i: int, j: int) -> List[List[int]]:
-
     if i - 1 >= 0:
         grid = _apply_change(grid, i - 1, j)
     if i - 1 >= 0 and j - 1 >= 0:
@@ -52,7 +50,6 @@ nb_total_flash: int = 0
 step_all_flash: int = 0
 
 for step in range(STEP_NUMBER):
-
     # Add 1 everywhere in the grid
     grid_octopus = [[number + 1 for number in line] for line in grid_octopus]
 

@@ -17,7 +17,6 @@ def _replace_fixed_bits(mask_dict: Dict[int, str], bit_value: str) -> int:
 
 
 def modify_bits_part1(mask: str, bit_value: str) -> int:
-
     mask_dict = {
         len(mask) - i - 1: bit for i, bit in enumerate(mask) if bit in ["0", "1"]
     }

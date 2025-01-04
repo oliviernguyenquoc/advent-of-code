@@ -33,8 +33,8 @@ while old_all_path_list != all_path_list:
                 path.append(path_tuple[1])
         if path[-1] == "end":
             continue
-    
-all_path_list = [path for path in all_path_list if path[-1]=="end"]
+
+all_path_list = [path for path in all_path_list if path[-1] == "end"]
 
 # print(path_tuple_list)
 # print(all_path_list)

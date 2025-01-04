@@ -2,7 +2,6 @@ import re
 
 
 def get_bag_dict(instruction_list: list) -> dict:
-
     bag_dict = {}
 
     for instruction in instruction_list:

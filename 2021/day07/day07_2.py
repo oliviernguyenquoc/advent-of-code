@@ -19,4 +19,3 @@ for i in range(1, max(position_list)):
 
 print(sum_fuel_list.index(min(sum_fuel_list)))
 print(min(sum_fuel_list))
-

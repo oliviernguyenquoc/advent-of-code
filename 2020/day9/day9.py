@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 
 def check_there_is_two_number_sum(a: int, x: List[int]) -> bool:
-    """ O(nlog(n)) complexity, O(1) space algo Yeah !"""
+    """O(nlog(n)) complexity, O(1) space algo Yeah !"""
 
     x = sorted(x)
 
@@ -20,7 +20,6 @@ def check_there_is_two_number_sum(a: int, x: List[int]) -> bool:
 
 
 def find_continuous_sum(a: int, x: List[int]) -> Tuple[int]:
-
     i, j = 0, 1
 
     while i != len(x) or j != len(x):
@@ -41,7 +40,7 @@ nb_list = f.readlines()
 nb_list = [int(nb) for nb in nb_list]
 LEN_CHECK = 25
 
-""" Complexity n * k*log(k) with k=25"""
+# Complexity n * k*log(k) with k=25
 for i in range(len(nb_list) - LEN_CHECK):
     if not check_there_is_two_number_sum(
         nb_list[i + LEN_CHECK], nb_list[i : i + LEN_CHECK]

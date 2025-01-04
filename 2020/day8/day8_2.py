@@ -6,7 +6,6 @@ instruction_list = [tuple(instruction.split()) for instruction in instruction_li
 
 
 def test_algo(instruction_list):
-
     done_list = [False] * len(instruction_list)
     i = 0
     acc = 0

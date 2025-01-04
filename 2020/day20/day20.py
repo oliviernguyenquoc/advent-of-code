@@ -1,9 +1,8 @@
-from typing import Dict, List, Tuple
 import math
 
 
 class Tile:
-    def __init__(self, name: str, code: List[str]):
+    def __init__(self, name: str, code: list[str]):
         self.name = name
         self.code = code
         self.code_size = len(code[0])
@@ -58,27 +57,27 @@ class Tile:
     def __repr__(self):
         return f"<{self.name}>"
 
-    def count_nb_monster(self, sea_monster_list: List[Tuple[int, int]])->int:
+    def count_nb_monster(self, sea_monster_list: list[tuple[int, int]]) -> int:
         nb_monster = 0
-        for i in range(self.code_size-2):
-            for j in range(self.code_size-19):
-                if all([self.code[i+k][j+l] == "#" for k, l in sea_monster_list]):
-                    nb_monster +=1
+        for i in range(self.code_size - 2):
+            for j in range(self.code_size - 19):
+                if all([self.code[i + m][j + n] == "#" for m, n in sea_monster_list]):
+                    nb_monster += 1
 
         return nb_monster
 
     def count_ones(self):
         nb = 0
         for row in self.code:
-            nb += row.count('#')
-        
+            nb += row.count("#")
+
         return nb
 
     # def __str__(self):
     #     return "\n".join(self.code)
 
 
-def find_match(tile_dict: Dict[str, Tile]) -> Dict[str, Tile]:
+def find_match(tile_dict: dict[str, Tile]) -> dict[str, Tile]:
     adjacent_dict = {tile_name: [] for tile_name in tile_dict}
 
     for tile_name_1, tile_1 in tile_dict.items():
@@ -118,13 +117,12 @@ print(f"Part 1: {math.prod([tile.number for tile in corner_tile_list])}")
 
 
 def get_right_tile(
-    adjacent_dict: Dict[str, Tile],
-    tile_dict: Dict[str, Tile],
+    adjacent_dict: dict[str, Tile],
+    tile_dict: dict[str, Tile],
     corner_tile: Tile,
     side: int,
-    already_used_tile_names: List[str] = [],
-) -> Tuple[str, int]:
-
+    already_used_tile_names: list[str] = [],
+) -> tuple[str, int]:
     connected_tile_names = [tile.name for tile in adjacent_dict[corner_tile.name]]
     tile_name_1, tile_name_2 = list(
         set(connected_tile_names) - set(already_used_tile_names)
@@ -148,13 +146,12 @@ def get_right_tile(
 
 
 def get_down_tile(
-    adjacent_dict: Dict[str, Tile],
-    tile_dict: Dict[str, Tile],
+    adjacent_dict: dict[str, Tile],
+    tile_dict: dict[str, Tile],
     corner_tile: Tile,
     side: int,
-    already_used_tile_names: List[str] = [],
-) -> Tuple[str, int]:
-
+    already_used_tile_names: list[str] = [],
+) -> tuple[str, int]:
     connected_tile_names = [tile.name for tile in adjacent_dict[corner_tile.name]]
     tile_name = list(set(connected_tile_names) - set(already_used_tile_names))
     adjacent_tile = tile_dict[tile_name[0]]
@@ -166,7 +163,7 @@ def get_down_tile(
     return None
 
 
-def print_tiles(tile_list: List[Tile], len_final_square: int, limit: int = None):
+def print_tiles(tile_list: list[Tile], len_final_square: int, limit: int = None):
     if not limit or limit > len_final_square:
         limit = len_final_square
     for j in range(limit):
@@ -211,7 +208,6 @@ len_final_square = int(math.sqrt(len(tile_dict)))
 # Order / turn tiles in the first row (Going from top left corner to the tiles at the direct right)
 print("--- Row 0 ----")
 for col in range(len_final_square - 1):
-
     print(f"-------- Col {col} ---------")
     adjacent_tile, j = get_right_tile(
         adjacent_dict, tile_dict, corner_tile, 1, already_used_tile_names
@@ -293,7 +289,7 @@ for _ in range(4):
     image_tile.turn_tile(1)
     print(nb_monster)
 
-print(image_tile.count_ones(), nb_monster*len(see_monster_list))
+print(image_tile.count_ones(), nb_monster * len(see_monster_list))
 print(f"Part 2: {image_tile.count_ones() - (nb_monster*len(see_monster_list))}")
 
 

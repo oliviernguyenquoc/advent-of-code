@@ -1,4 +1,3 @@
-from typing import List, Dict
 import tqdm
 
 NB_STEP = 10
@@ -8,7 +7,7 @@ with open("./day14/input.txt") as f:
 
 polymere_template = instruction_list[0]
 
-receipes: Dict[str, str] = {}
+receipes: dict[str, str] = {}
 
 for instruction in instruction_list[2:]:
     duo_letter, insertion_letter = instruction.split(" -> ")
@@ -24,9 +23,8 @@ for step in tqdm.tqdm(range(NB_STEP)):
     new_polymere += polymere_template[i + 1]
     polymere_template = new_polymere
 
-    # print(polymere_template)
 
-count_dict: Dict[str, int] = {}
+count_dict: dict[str, int] = {}
 
 for letter in polymere_template:
     if letter not in count_dict:
@@ -35,9 +33,6 @@ for letter in polymere_template:
         count_dict[letter] += 1
 
 print(count_dict)
-
-
-# print(polymere_template)
 
 
 min_letter = min(count_dict.items(), key=lambda x: x[1])
