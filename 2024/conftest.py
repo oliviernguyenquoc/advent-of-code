@@ -4,6 +4,7 @@ from rich.console import Console
 from rich.table import Table
 from rich import box
 from collections import defaultdict
+from rich.terminal_theme import MONOKAI
 
 # Constants for test statuses
 PASSED = "✅"
@@ -101,7 +102,7 @@ def pytest_terminal_summary(terminalreporter):
 
     # Create a console that writes to the same output file as Pytest
     # so the table appears in the normal Pytest output stream.
-    console = Console(file=terminalreporter._tw._file)
+    console = Console(file=terminalreporter._tw._file, record=True)
 
     table = create_summary_table()
 
@@ -121,6 +122,9 @@ def pytest_terminal_summary(terminalreporter):
 
     # Print the table via Rich
     console.print(table)
+
+    # Export to SVG
+    console.save_svg("results_2024.svg", theme=MONOKAI)
 
     # Optional: Still print any TIMEOUTED TESTS section, if you like:
     timeouts = terminalreporter.stats.get("timeout", [])
