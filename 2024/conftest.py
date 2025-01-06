@@ -5,6 +5,7 @@ from rich.table import Table
 from rich import box
 from collections import defaultdict
 from rich.terminal_theme import MONOKAI
+from rich.align import Align
 
 # Constants for test statuses
 PASSED = "✅"
@@ -119,6 +120,8 @@ def pytest_terminal_summary(terminalreporter):
             format_time(data["part1_time"]),
             format_time(data["part2_time"]),
         )
+
+    table = Align.center(table, vertical="middle")
 
     # Print the table via Rich
     console.print(table)
