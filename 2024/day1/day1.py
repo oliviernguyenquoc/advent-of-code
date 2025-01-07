@@ -22,7 +22,6 @@ def part1(instruction_list):
     for nb1, nb2 in zip(list1, list2):
         distance += max(nb1, nb2) - min(nb1, nb2)
 
-    print(f"Part 1: {distance}")
     return distance
 
 
@@ -37,7 +36,6 @@ def part2(instruction_list):
     for i in list1:
         total += nb_freq_dict[i] * i
 
-    print(f"Part 2: {total}")
     return total
 
 
@@ -46,5 +44,5 @@ if __name__ == "__main__":
 
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
-    part1(instruction_list)
-    part2(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

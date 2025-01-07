@@ -58,70 +58,76 @@ class Folder:
         return total_weight
 
 
-with open("./day7/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.read().splitlines()
+def solve(instruction_list, part):
+    # remove cd /
+    instruction_list = instruction_list[1:]
 
-# remove cd /
-instruction_list = instruction_list[1:]
+    folder = Folder(name="/", parent=None)
+    i = 0
+    folder_tmp = folder
 
-folder = Folder(name="/", parent=None)
-i = 0
-folder_tmp = folder
+    while i != len(instruction_list):
+        instruction = instruction_list[i]
 
-while i != len(instruction_list):
-    instruction = instruction_list[i]
-
-    if instruction.startswith("$ ls"):
-        j = i + 1
-        while (j != len(instruction_list)) and (
-            not instruction_list[j].startswith("$")
-        ):
-            j += 1
-        folder_tmp.read_from_ls(instruction_list[i + 1 : j], parent_folder=folder_tmp)
-        i = j
-
-    elif instruction.startswith("$ cd"):
-        folder_name = re.search(r"\$ cd (.*)", instruction).group(1)
-
-        if folder_name == "..":
-            folder_tmp = folder_tmp.parent
-        else:
-            folder_tmp = folder_tmp.get_from_folder_list_by_name(
-                folder_name, parent_folder=folder_tmp
+        if instruction.startswith("$ ls"):
+            j = i + 1
+            while (j != len(instruction_list)) and (
+                not instruction_list[j].startswith("$")
+            ):
+                j += 1
+            folder_tmp.read_from_ls(
+                instruction_list[i + 1 : j], parent_folder=folder_tmp
             )
+            i = j
 
-        i += 1
+        elif instruction.startswith("$ cd"):
+            folder_name = re.search(r"\$ cd (.*)", instruction).group(1)
 
-res: int = 0
+            if folder_name == "..":
+                folder_tmp = folder_tmp.parent
+            else:
+                folder_tmp = folder_tmp.get_from_folder_list_by_name(
+                    folder_name, parent_folder=folder_tmp
+                )
 
-folder_list = folder.get_all_subfolders()
-folder_list.append(folder)
+            i += 1
 
-for subfolder in folder_list:
-    weight = subfolder.get_total_weight()
-    if weight < 100000:
-        res += weight
+    res: int = 0
 
-print(f"Part 1: {res}")
+    folder_list = folder.get_all_subfolders()
+    folder_list.append(folder)
 
-#################### PART 2 ####################
+    for subfolder in folder_list:
+        weight = subfolder.get_total_weight()
+        if weight < 100000:
+            res += weight
+    if part == 1:
+        return res
 
-TOTAL_DISK_SIZE = 70000000
-SPACE_NEEDED = 30000000
+    TOTAL_DISK_SIZE = 70000000
+    SPACE_NEEDED = 30000000
 
-OUTERMOST_DIR_SPACE = folder.get_total_weight()
-SEARCHING_SPACE = SPACE_NEEDED - (TOTAL_DISK_SIZE - OUTERMOST_DIR_SPACE)
+    OUTERMOST_DIR_SPACE = folder.get_total_weight()
+    SEARCHING_SPACE = SPACE_NEEDED - (TOTAL_DISK_SIZE - OUTERMOST_DIR_SPACE)
 
-print(f"The outermost directory takes: {OUTERMOST_DIR_SPACE}")
-print(f"We are searching to free {SEARCHING_SPACE}")
+    print(f"The outermost directory takes: {OUTERMOST_DIR_SPACE}")
+    print(f"We are searching to free {SEARCHING_SPACE}")
 
-res_folder_space = TOTAL_DISK_SIZE
+    res_folder_space = TOTAL_DISK_SIZE
 
-folder_list = folder.get_all_subfolders()
-for subfolder in folder_list:
-    weight = subfolder.get_total_weight()
-    if SEARCHING_SPACE < weight < res_folder_space:
-        res_folder_space = weight
-        print(f"Dir {subfolder.name} free {weight}")
+    folder_list = folder.get_all_subfolders()
+    for subfolder in folder_list:
+        weight = subfolder.get_total_weight()
+        if SEARCHING_SPACE < weight < res_folder_space:
+            res_folder_space = weight
+            print(f"Dir {subfolder.name} free {weight}")
 
-print(f"Part 1: {res_folder_space}")
+    return res_folder_space
+
+
+if __name__ == "__main__":
+    with open("./day2/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

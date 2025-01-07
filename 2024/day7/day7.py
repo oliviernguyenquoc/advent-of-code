@@ -60,7 +60,6 @@ def part2(instruction_list):
         if res in comb:
             total_calibration += res
 
-    print(f"Part 2: {total_calibration}")
     return total_calibration
 
 
@@ -70,5 +69,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(part1(instruction_list))
+    print(part2(instruction_list))

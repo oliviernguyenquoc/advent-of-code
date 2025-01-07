@@ -33,10 +33,8 @@ def solve(instruction_list, part=1):
             total_part2 += mul[0] * mul[1]
 
     if part == 1:
-        print(f"Part 1: {total_part1}")
         return total_part1
     else:
-        print(f"Part 2: {total_part2}")
         return total_part2
 
 
@@ -46,5 +44,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 1: {solve(instruction_list, part=2)}")

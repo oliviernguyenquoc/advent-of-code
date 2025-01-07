@@ -1,34 +1,40 @@
-NB_STACKS = 9
+def part1(instruction_list):
+    NB_STACKS = 9
 
-stack: list[list[str]] = [[] for i in range(NB_STACKS)]
-with open("./day5/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.read().splitlines()
+    stack: list[list[str]] = [[] for i in range(NB_STACKS)]
 
-for instruction in instruction_list:
-    if (
-        not instruction.startswith("move")
-        and not instruction.startswith(" 1   2   3")
-        and instruction != ""
-    ):
-        for i in range(0, NB_STACKS * 4, 4):
-            if instruction[i : i + 3] == "   ":
-                continue
-            if instruction[i] == "[":
-                stack[i // 4].append(instruction[i + 1])
-    elif instruction.startswith(" 1   2   3"):
-        stack = [row[::-1] for row in stack]
-    elif instruction.startswith("move"):
-        _, nb_move, _, stack_begin_position, _, stack_end_position = instruction.split(
-            " "
-        )
+    for instruction in instruction_list:
+        if (
+            not instruction.startswith("move")
+            and not instruction.startswith(" 1   2   3")
+            and instruction != ""
+        ):
+            for i in range(0, NB_STACKS * 4, 4):
+                if instruction[i : i + 3] == "   ":
+                    continue
+                if instruction[i] == "[":
+                    stack[i // 4].append(instruction[i + 1])
+        elif instruction.startswith(" 1   2   3"):
+            stack = [row[::-1] for row in stack]
+        elif instruction.startswith("move"):
+            _, nb_move, _, stack_begin_position, _, stack_end_position = (
+                instruction.split(" ")
+            )
 
-        # cast to int
-        nb_move = int(nb_move)
-        stack_begin_position = int(stack_begin_position)
-        stack_end_position = int(stack_end_position)
+            # cast to int
+            nb_move = int(nb_move)
+            stack_begin_position = int(stack_begin_position)
+            stack_end_position = int(stack_end_position)
 
-        for i in range(nb_move):
-            item_to_move = stack[stack_begin_position - 1].pop()
-            stack[stack_end_position - 1].append(item_to_move)
+            for i in range(nb_move):
+                item_to_move = stack[stack_begin_position - 1].pop()
+                stack[stack_end_position - 1].append(item_to_move)
 
-print("".join([row[-1] for row in stack]))
+    return "".join([row[-1] for row in stack])
+
+
+if __name__ == "__main__":
+    with open("./day5/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {part1(instruction_list)}")

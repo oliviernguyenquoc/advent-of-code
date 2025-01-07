@@ -168,7 +168,6 @@ def part1(instruction_list):
     bit_dict = get_operations_results(instruct_list_init, bit_dict)
     z = compute_number(bit_dict, "z")
 
-    print(f"Part 1: {z}")
     return z
 
 
@@ -244,7 +243,7 @@ def part2(instruction_list):
                     ]
                 )
             )
-            print(f"Part 2: {res}")
+
             return res
 
 
@@ -254,5 +253,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(part1(instruction_list))
+    print(part2(instruction_list))
