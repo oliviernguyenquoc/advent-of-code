@@ -1,9 +1,6 @@
 import itertools
 from collections import defaultdict
 
-with open("./day7/input.txt", encoding="utf-8") as f:
-    instructions: list[str] = f.readlines()
-
 
 def get_strength(hand: str) -> int:
     letter_dict = defaultdict(int)
@@ -70,27 +67,35 @@ def is_better(hand1: str, hand2: str) -> bool:
     raise Exception("Ohoh")
 
 
-hands = []
-bid_dict = {}
+def part1(instructions):
+    hands = []
+    bid_dict = {}
 
-for instruction in instructions:
-    hand, bid = instruction.split()
-    hands.append(hand)
-    bid_dict[hand] = int(bid)
+    for instruction in instructions:
+        hand, bid = instruction.split()
+        hands.append(hand)
+        bid_dict[hand] = int(bid)
 
-point_dict: dict[str, int] = {hand: 0 for hand in hands}
+    point_dict: dict[str, int] = {hand: 0 for hand in hands}
 
-for hand1, hand2 in itertools.combinations(hands, 2):
-    if is_better(hand1, hand2):
-        point_dict[hand1] += 1
-    else:
-        point_dict[hand2] += 1
+    for hand1, hand2 in itertools.combinations(hands, 2):
+        if is_better(hand1, hand2):
+            point_dict[hand1] += 1
+        else:
+            point_dict[hand2] += 1
 
-total = 0
-i = 1
+    total = 0
+    i = 1
 
-for hand, value in sorted(point_dict.items(), key=lambda x: x[1]):
-    total += bid_dict[hand] * i
-    i += 1
+    for hand, _ in sorted(point_dict.items(), key=lambda x: x[1]):
+        total += bid_dict[hand] * i
+        i += 1
 
-print(total)
+    return total
+
+
+if __name__ == "__main__":
+    with open("./day7/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {part1(instruction_list)}")

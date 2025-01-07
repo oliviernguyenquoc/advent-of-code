@@ -1,16 +1,10 @@
-with open("./2023/day16/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
-
-grid = [instruction.strip() for instruction in instruction_list]
-
-len_x = len(grid[0])
-len_y = len(grid)
-
-
 # x, y, direction(x, y)
 def nb_tiles_energized(
-    start_x: int, start_y: int, start_direction_x: int, start_direction_y: int
+    grid, start_x: int, start_y: int, start_direction_x: int, start_direction_y: int
 ) -> int:
+    len_x = len(grid[0])
+    len_y = len(grid)
+
     seen = set()
     queue = [(start_x, start_y, start_direction_x, start_direction_y)]
 
@@ -60,17 +54,31 @@ def nb_tiles_energized(
     return len({(x, y) for x, y, _, _ in seen}) - 1
 
 
-print(f"Part 1: {nb_tiles_energized(-1, 0, 1, 0)}")
-
-results = {}
-for x in range(len_x):
-    results[(x, -1, 0, 1)] = nb_tiles_energized(x, -1, 0, 1)
-    results[(x, len_y, 0, -1)] = nb_tiles_energized(x, len_y, 0, -1)
+def part1(instruction_list):
+    grid = [instruction.strip() for instruction in instruction_list]
+    return nb_tiles_energized(grid, -1, 0, 1, 0)
 
 
-for y in range(len_y):
-    results[(-1, y, 1, 0)] = nb_tiles_energized(-1, y, 1, 0)
-    results[(len_x, y, -1, 0)] = nb_tiles_energized(len_x, y, -1, 0)
+def part2(instruction_list):
+    grid = [instruction.strip() for instruction in instruction_list]
+    len_x = len(grid[0])
+    len_y = len(grid)
 
-# print(results)
-print(f"Part 2: {max(results.values())}")
+    results = {}
+    for x in range(len_x):
+        results[(x, -1, 0, 1)] = nb_tiles_energized(grid, x, -1, 0, 1)
+        results[(x, len_y, 0, -1)] = nb_tiles_energized(grid, x, len_y, 0, -1)
+
+    for y in range(len_y):
+        results[(-1, y, 1, 0)] = nb_tiles_energized(grid, -1, y, 1, 0)
+        results[(len_x, y, -1, 0)] = nb_tiles_energized(grid, len_x, y, -1, 0)
+
+    return max(results.values())
+
+
+if __name__ == "__main__":
+    with open("./2023/day16/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

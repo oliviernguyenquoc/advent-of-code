@@ -68,10 +68,7 @@ class Map:
         return maping
 
 
-if __name__ == "__main__":
-    with open("./day5/input.txt", encoding="utf-8") as f:
-        instructions: list[str] = f.readlines()
-
+def part1(instructions):
     seed_instruction = instructions.pop(0)
     seed_txt = re.search(r"seeds: ([0-9 ]*)", seed_instruction).groups()
     seeds = [int(seed) for seed in seed_txt[0].split()]
@@ -100,5 +97,11 @@ if __name__ == "__main__":
 
     inverted_dict = {value: key for key, value in seed_dict.items()}
 
-    print(inverted_dict)
-    print(min(inverted_dict.keys()))
+    return min(inverted_dict.keys())
+
+
+if __name__ == "__main__":
+    with open("./day5/input.txt", encoding="utf-8") as f:
+        instructions: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instructions)}")

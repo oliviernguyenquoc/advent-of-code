@@ -122,10 +122,7 @@ class Map:
         return [(a, b) for a, b in itertools.pairwise(split_points)]
 
 
-if __name__ == "__main__":
-    with open("./day5/input.txt", encoding="utf-8") as f:
-        instructions: list[str] = f.readlines()
-
+def part2(instructions):
     seed_instruction = instructions.pop(0)
     seed_txt = re.search(r"seeds: ([0-9 ]*)", seed_instruction).groups()
     seeds = [int(seed) for seed in seed_txt[0].split()]
@@ -150,7 +147,7 @@ if __name__ == "__main__":
 
     map_dict["location"].sort()
 
-    res_dict = {}
+    # res_dict = {}
 
     segments: list[tuple[int, int]] = []
     for range_location in map_dict["location"].range_list:
@@ -161,6 +158,8 @@ if __name__ == "__main__":
             )
         )
 
+        found = False
+        curent_value = 0
         while point != "location":
             while segments:
                 segment = segments.pop(0)
@@ -180,3 +179,11 @@ if __name__ == "__main__":
                 break
 
     print(found, curent_value)
+    return curent_value
+
+
+if __name__ == "__main__":
+    with open("./day5/test_input.txt", encoding="utf-8") as f:
+        instructions: list[str] = f.readlines()
+
+    print(f"Part 2: {part2(instructions)}")

@@ -1,8 +1,3 @@
-with open("./day1/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.read().splitlines()
-
-# Part 2
-
 DIGITS_IN_LETTER = {
     "one": 1,
     "two": 2,
@@ -39,14 +34,14 @@ def extract_digit(characters: str, digit_dict: dict[str, int]) -> int:
     raise Exception("Weird")
 
 
-def part2():
+def part2(instruction_list):
     all_digit_list = []
     for instruction in instruction_list:
         first_digit = extract_digit(instruction, DIGITS_IN_LETTER)
         second_digit = extract_digit(instruction[::-1], REVERSE_DIGIT)
 
         all_digit_list.append(int(str(first_digit) + str(second_digit)))
-
+    print(all_digit_list)
     return sum(all_digit_list)
 
 

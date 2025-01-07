@@ -1,4 +1,5 @@
 def horizontal_comparison(figure: list[str], y: int) -> bool:
+    len_y = len(figure)
     if y <= len_y // 2:
         if figure[:y] == figure[y : 2 * y][::-1]:
             return True
@@ -25,7 +26,8 @@ def vertical_comparison(figure: list[str], x: int) -> bool:
     return part1 == part2
 
 
-def horizontal_comparison_with_smuge(figure: list[str], y: int) -> bool:
+def horizontal_comparison_with_smudge(figure: list[str], y: int) -> bool:
+    len_y = len(figure)
     if y <= len_y // 2:
         if sum([figure[:y][i] != figure[y : 2 * y][::-1][i] for i in range(y)]) == 1:
             return (
@@ -62,7 +64,7 @@ def horizontal_comparison_with_smuge(figure: list[str], y: int) -> bool:
             )
 
 
-def vertical_comparison_with_smuge(figure: list[str], y: int) -> bool:
+def vertical_comparison_with_smudge(figure: list[str], x: int) -> bool:
     len_x = len(figure[0])
     part1 = []
     part2 = []
@@ -102,38 +104,66 @@ def vertical_comparison_with_smuge(figure: list[str], y: int) -> bool:
         )
 
 
-with open("./2023/day13/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
+def parse_data(instruction_list):
+    figures = []
+    tmp = []
+    for instruction in instruction_list:
+        if instruction == "\n":
+            figures.append(tmp)
+            tmp = []
+        else:
+            tmp.append(instruction.strip())
+    figures.append(tmp)
 
-figures = []
-tmp = []
-for instruction in instruction_list:
-    if instruction == "\n":
-        figures.append(tmp)
-        tmp = []
-    else:
-        tmp.append(instruction.strip())
-figures.append(tmp)
+    return figures
 
-horizontal_symetries, vertical_symetries = 0, 0
-horizontal_symetries_smuge, vertical_symetries_smuge = 0, 0
 
-for i, figure in enumerate(figures):
-    len_y = len(figure)
-    for y in range(1, len_y):
-        if horizontal_comparison(figure, y):
-            horizontal_symetries += 100 * y
+def part1(instruction_list):
+    figures = parse_data(instruction_list)
 
-        elif horizontal_comparison_with_smuge(figure, y):
-            horizontal_symetries_smuge += 100 * y
+    horizontal_symetries, vertical_symetries = 0, 0
 
-    for x in range(1, len(figure[0])):
-        if vertical_comparison(figure, x):
-            vertical_symetries += x
+    for i, figure in enumerate(figures):
+        len_y = len(figure)
+        for y in range(1, len_y):
+            if horizontal_comparison(figure, y):
+                horizontal_symetries += 100 * y
 
-        elif vertical_comparison_with_smuge(figure, x):
-            vertical_symetries_smuge += x
+        for x in range(1, len(figure[0])):
+            if vertical_comparison(figure, x):
+                vertical_symetries += x
 
-print(f"Part 1: {horizontal_symetries + vertical_symetries}")
+    return horizontal_symetries + vertical_symetries
 
-print(f"Part 2: {horizontal_symetries_smuge + vertical_symetries_smuge}")
+
+def part2(instruction_list):
+    figures = parse_data(instruction_list)
+
+    horizontal_symetries, vertical_symetries = 0, 0
+    horizontal_symetries_smuge, vertical_symetries_smuge = 0, 0
+
+    for i, figure in enumerate(figures):
+        len_y = len(figure)
+        for y in range(1, len_y):
+            if horizontal_comparison(figure, y):
+                horizontal_symetries += 100 * y
+
+            elif horizontal_comparison_with_smudge(figure, y):
+                horizontal_symetries_smuge += 100 * y
+
+        for x in range(1, len(figure[0])):
+            if vertical_comparison(figure, x):
+                vertical_symetries += x
+
+            elif vertical_comparison_with_smudge(figure, x):
+                vertical_symetries_smuge += x
+
+    return horizontal_symetries_smuge + vertical_symetries_smuge
+
+
+if __name__ == "__main__":
+    with open("./2023/day13/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

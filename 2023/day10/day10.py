@@ -76,101 +76,81 @@ def find_start(instruction_list: list[str]) -> tuple[int, int]:
                 return (i, j)
 
 
-with open("./2023/day10/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
+def solve(instruction_list, part, start="7"):
+    instruction_list = [instruction.strip() for instruction in instruction_list]
 
-instruction_list = [instruction.strip() for instruction in instruction_list]
-
-start_x, start_y = find_start(instruction_list)
-position = Position(
-    grid=instruction_list, x1=start_x, y1=start_y, x2=start_x, y2=start_y
-)
-
-nb_moves = 1
-all_positions = {(start_x, start_y)}
-old_direction1, old_direction2 = position.move()
-all_positions.update([(position.x1, position.y1), (position.x2, position.y2)])
-
-while not position.is_same_positions():
-    old_direction1, old_direction2 = position.move(
-        exclude_directions=[
-            (-old_direction1[0], -old_direction1[1]),
-            (-old_direction2[0], -old_direction2[1]),
-        ]
+    start_x, start_y = find_start(instruction_list)
+    position = Position(
+        grid=instruction_list, x1=start_x, y1=start_y, x2=start_x, y2=start_y
     )
+
+    nb_moves = 1
+    all_positions = {(start_x, start_y)}
+    old_direction1, old_direction2 = position.move()
     all_positions.update([(position.x1, position.y1), (position.x2, position.y2)])
-    nb_moves += 1
 
-if position.x1 == 0 and position.y1 == 0:
-    nb_moves = nb_moves // 2
+    while not position.is_same_positions():
+        old_direction1, old_direction2 = position.move(
+            exclude_directions=[
+                (-old_direction1[0], -old_direction1[1]),
+                (-old_direction2[0], -old_direction2[1]),
+            ]
+        )
+        all_positions.update([(position.x1, position.y1), (position.x2, position.y2)])
+        nb_moves += 1
 
-print(f"Part 1: {nb_moves}")
+    if position.x1 == 0 and position.y1 == 0:
+        nb_moves = nb_moves // 2
 
-grid = instruction_list
+    if part == 1:
+        return nb_moves
 
-enable_in = [False] * len(grid[0])
-memory_7L = [False] * len(grid[0])
-memory_FJ = [False] * len(grid[0])
+    grid = instruction_list
 
-count_in = 0
-for y in range(len(grid)):
-    for x in range(len(grid[0])):
-        if (x, y) in all_positions:
-            match grid[y][x]:
-                case "-":
-                    enable_in[x] = not enable_in[x]
-                case "7":
-                    memory_7L[x] = True
-                case "L":
-                    if memory_7L[x]:
-                        memory_7L[x] = False
+    enable_in = [False] * len(grid[0])
+    memory_7L = [False] * len(grid[0])
+    memory_FJ = [False] * len(grid[0])
+
+    count_in = 0
+    for y in range(len(grid)):
+        for x in range(len(grid[0])):
+            if (x, y) in all_positions:
+                match grid[y][x]:
+                    case "-":
                         enable_in[x] = not enable_in[x]
-                    elif memory_FJ[x]:
-                        memory_FJ[x] = False
-                case "F":
-                    memory_FJ[x] = True
-                case "J":
-                    if memory_FJ[x]:
-                        memory_FJ[x] = False
-                        enable_in[x] = not enable_in[x]
-                    elif memory_7L[x]:
-                        memory_7L[x] = False
+                    case "7":
+                        memory_7L[x] = True
+                    case "L":
+                        if memory_7L[x]:
+                            memory_7L[x] = False
+                            enable_in[x] = not enable_in[x]
+                        elif memory_FJ[x]:
+                            memory_FJ[x] = False
+                    case "F":
+                        memory_FJ[x] = True
+                    case "J":
+                        if memory_FJ[x]:
+                            memory_FJ[x] = False
+                            enable_in[x] = not enable_in[x]
+                        elif memory_7L[x]:
+                            memory_7L[x] = False
 
-                # Because in my case, it should be a 7
-                case "S":
-                    memory_7L[x] = True
-        elif enable_in[x]:
-            count_in += 1
+                    # Because in my case, it should be a 7
+                    case "S":
+                        match start:
+                            case "7":
+                                memory_7L[x] = True
+                            case "F":
+                                memory_FJ[x] = True
+            elif enable_in[x]:
+                count_in += 1
 
-print(f"Part 2: {count_in}")
+    return count_in
 
 
-# # Tried flood-fill (NOT WORKING)
-# y_len, x_len = len(position.grid), len(position.grid[0])
+if __name__ == "__main__":
+    with open("./2023/day10/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
 
-# position_to_explore = set((0, i) for i in range(y_len) if (0, i) not in all_positions)
-# position_to_explore.update(
-#     set((x_len - 1, i) for i in range(y_len) if (x_len - 1, i)  not in all_positions)
-# )
-# position_to_explore.update(
-#     set((i, 0) for i in range(x_len) if (i, 0) not in all_positions)
-# )
-# position_to_explore.update(
-#     set((i, y_len - 1) for i in range(x_len) if (i, y_len - 1) not in all_positions)
-# )
-
-# possible_moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-# all_positions.update(position_to_explore)
-# while position_to_explore:
-#     pos = position_to_explore.pop()
-#     for move in possible_moves:
-#         if (
-#             0 <= pos[0] + move[0] < x_len
-#             and 0 <= pos[1] + move[1] < y_len
-#             and (pos[0] + move[0], pos[1] + move[1]) not in all_positions
-#         ):
-#             position_to_explore.add((pos[0] + move[0], pos[1] + move[1]))
-#             all_positions.add((pos[0] + move[0], pos[1] + move[1]))
-
-# print(set((i,j) for i in range(x_len) for j in range(y_len)).difference(all_positions))
-# print(f"Part 2: {(x_len * y_len) - len(all_positions)}")
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

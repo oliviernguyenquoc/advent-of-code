@@ -31,6 +31,9 @@ def parse_year_day_part(nodeid: str):
     """
     # Split nodeid at '::' to separate file-part from function-part
     file_part, func_part = nodeid.split("::", 1)
+    # print("----")
+    # print(file_part)
+    # print("##########")
     # file_part might be '2024/day24/test_day24.py'
     segments = file_part.split("/")
 
@@ -127,7 +130,7 @@ def pytest_terminal_summary(terminalreporter):
     console.print(table)
 
     # Export to SVG
-    console.save_svg("results_2024.svg", theme=MONOKAI)
+    console.save_svg(f"results_{year}.svg", theme=MONOKAI)
 
     # Optional: Still print any TIMEOUTED TESTS section, if you like:
     timeouts = terminalreporter.stats.get("timeout", [])
