@@ -39,11 +39,19 @@ def extract_digit(characters: str, digit_dict: dict[str, int]) -> int:
     raise Exception("Weird")
 
 
-all_digit_list = []
-for instruction in instruction_list:
-    first_digit = extract_digit(instruction, DIGITS_IN_LETTER)
-    second_digit = extract_digit(instruction[::-1], REVERSE_DIGIT)
+def part2():
+    all_digit_list = []
+    for instruction in instruction_list:
+        first_digit = extract_digit(instruction, DIGITS_IN_LETTER)
+        second_digit = extract_digit(instruction[::-1], REVERSE_DIGIT)
 
-    all_digit_list.append(int(str(first_digit) + str(second_digit)))
+        all_digit_list.append(int(str(first_digit) + str(second_digit)))
 
-print(sum(all_digit_list))
+    return sum(all_digit_list)
+
+
+if __name__ == "__main__":
+    with open("./day1/input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 2: {part2(instruction_list)}")
