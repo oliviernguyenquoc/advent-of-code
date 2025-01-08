@@ -1,13 +1,4 @@
-from typing import Dict, Set, List
-
-with open("./day08/input.txt") as f:
-    instruction_list = f.read().splitlines()
-
-output_value_list = [instruction.split(" | ")[1] for instruction in instruction_list]
-output_value_list = [output_value.split() for output_value in output_value_list]
-
-input_value_list = [instruction.split(" | ")[0] for instruction in instruction_list]
-input_value_list = [input_value.split() for input_value in input_value_list]
+import pathlib
 
 DIGIT_SET = {
     0: {"a", "b", "c", "e", "f", "g"},
@@ -24,7 +15,7 @@ DIGIT_SET = {
 
 
 def _test_intersection(
-    digit: int, str_to_test: str, local_digit_dict: Dict[int, Set[int]]
+    digit: int, str_to_test: str, local_digit_dict: dict[int, set[int]]
 ) -> bool:
     return all(
         [
@@ -36,7 +27,7 @@ def _test_intersection(
     )
 
 
-def get_corespondance(input_value_list: str) -> Dict[int, Set[str]]:
+def get_corespondance(input_value_list: str) -> dict[int, set[str]]:
     local_digit_dict = {}
 
     for group_str in input_value_list:
@@ -74,7 +65,7 @@ def get_corespondance(input_value_list: str) -> Dict[int, Set[str]]:
 
 
 def get_numbers(
-    correspondance_dict: Dict[str, Set[str]], output_value_list: List[str]
+    correspondance_dict: dict[str, set[str]], output_value_list: list[str]
 ) -> int:
     res_list = []
     for value in output_value_list:
@@ -85,11 +76,31 @@ def get_numbers(
     return int("".join(str(i) for i in res_list))
 
 
-res_list = []
+def part2(instruction_list):
+    output_value_list = [
+        instruction.split(" | ")[1] for instruction in instruction_list
+    ]
+    output_value_list = [output_value.split() for output_value in output_value_list]
 
-for i in range(len(input_value_list)):
-    correspondance_dict = get_corespondance(input_value_list[i] + output_value_list[i])
-    number = get_numbers(correspondance_dict, output_value_list[i])
-    res_list.append(number)
+    input_value_list = [instruction.split(" | ")[0] for instruction in instruction_list]
+    input_value_list = [input_value.split() for input_value in input_value_list]
 
-print(sum(res_list))
+    res_list = []
+
+    for i in range(len(input_value_list)):
+        correspondance_dict = get_corespondance(
+            input_value_list[i] + output_value_list[i]
+        )
+        number = get_numbers(correspondance_dict, output_value_list[i])
+        res_list.append(number)
+
+    return sum(res_list)
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 2: {part2(instruction_list)}")

@@ -1,12 +1,9 @@
-from typing import List, Set
-
-with open("./day04/input.txt") as f:
-    instruction_list = f.read().splitlines()
+import pathlib
 
 
-def generate_lists_from_scoreboard(instruction_list) -> List[List[Set[str]]]:
+def generate_lists_from_scoreboard(instruction_list) -> list[list[set[str]]]:
     card_list = []
-    new_card: List[Set[str]] = [set() for i in range(5)]
+    new_card: list[set[str]] = [set() for i in range(5)]
 
     for idx_instruction, instruction in enumerate(instruction_list):
         if instruction == "":
@@ -26,32 +23,42 @@ def generate_lists_from_scoreboard(instruction_list) -> List[List[Set[str]]]:
     return card_list
 
 
-card_list = generate_lists_from_scoreboard(instruction_list[2:])
+def part1(instruction_list):
+    card_list = generate_lists_from_scoreboard(instruction_list[2:])
 
-stop: bool = False
+    stop: bool = False
 
-bingo_numbers = instruction_list[0].split(",")
+    bingo_numbers = instruction_list[0].split(",")
 
-for bingo_idx, actual_nb in enumerate(bingo_numbers):
-    for card_idx, card in enumerate(card_list):
-        for nb_set_idx, nb_set in enumerate(card):
-            if len(nb_set - set(bingo_numbers[: bingo_idx + 1])) == 0:
-                stop = True
+    for bingo_idx, actual_nb in enumerate(bingo_numbers):
+        for card_idx, card in enumerate(card_list):
+            for nb_set_idx, nb_set in enumerate(card):
+                if len(nb_set - set(bingo_numbers[: bingo_idx + 1])) == 0:
+                    stop = True
+                    break
+            if stop:
                 break
         if stop:
             break
-    if stop:
-        break
 
-winning_card = card_list[card_idx]
-winning_card = [card - set(bingo_numbers[: bingo_idx + 1]) for card in winning_card]
+    winning_card = card_list[card_idx]
+    winning_card = [card - set(bingo_numbers[: bingo_idx + 1]) for card in winning_card]
 
-print(card_idx, nb_set_idx)
-print(winning_card)
-print(card_list[card_idx][nb_set_idx])
+    print(card_idx, nb_set_idx)
+    print(winning_card)
+    print(card_list[card_idx][nb_set_idx])
 
-sum = sum([int(nb_str) for nb_set in winning_card for nb_str in nb_set])
+    total_sum = sum([int(nb_str) for nb_set in winning_card for nb_str in nb_set])
 
-print(sum // 2)
-print(int(bingo_numbers[bingo_idx]))
-print(sum * int(bingo_numbers[bingo_idx]) // 2)
+    print(total_sum // 2)
+    print(int(bingo_numbers[bingo_idx]))
+    return total_sum * int(bingo_numbers[bingo_idx]) // 2
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {part1(instruction_list)}")

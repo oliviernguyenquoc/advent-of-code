@@ -1,7 +1,7 @@
-from typing import Set, Tuple, Dict
+import pathlib
 
 
-def generate_set(x1: int, y1: int, x2: int, y2: int) -> Set[Tuple[int, int]]:
+def generate_set(x1: int, y1: int, x2: int, y2: int) -> set[tuple[int, int]]:
     if x1 == x2 or y1 == y2:
         res = {
             (x, y)
@@ -13,7 +13,7 @@ def generate_set(x1: int, y1: int, x2: int, y2: int) -> Set[Tuple[int, int]]:
     return res
 
 
-def generate_set_with_diag(x1: int, y1: int, x2: int, y2: int) -> Set[Tuple[int, int]]:
+def generate_set_with_diag(x1: int, y1: int, x2: int, y2: int) -> set[tuple[int, int]]:
     if x1 == x2 or y1 == y2:
         res = {
             (x, y)
@@ -80,35 +80,43 @@ def test_generate_set_with_diag():
 # test_generate_set_with_diag()
 # exit(0)
 
-with open("./day05/input.txt") as f:
-    instruction_list = f.read().splitlines()
 
-max_x, max_y = 0, 0
-grid: Dict[Tuple[int, int], int] = {}
+def part1(instruction_list):
+    max_x, max_y = 0, 0
+    grid: dict[tuple[int, int], int] = {}
 
-for instruction in instruction_list:
-    coordinates_str = [
-        coordinates.split(",") for coordinates in instruction.split(" -> ")
-    ]
-    (x1, y1), (x2, y2) = [(int(x), int(y)) for x, y in coordinates_str]
-    max_x = max(max_x, x1, x2)
-    max_y = max(max_y, y1, y2)
+    for instruction in instruction_list:
+        coordinates_str = [
+            coordinates.split(",") for coordinates in instruction.split(" -> ")
+        ]
+        (x1, y1), (x2, y2) = [(int(x), int(y)) for x, y in coordinates_str]
+        max_x = max(max_x, x1, x2)
+        max_y = max(max_y, y1, y2)
 
-    # line_set = generate_set(x1, y1, x2, y2) # PART 1
-    line_set = generate_set_with_diag(x1, y1, x2, y2)
+        # line_set = generate_set(x1, y1, x2, y2) # PART 1
+        line_set = generate_set_with_diag(x1, y1, x2, y2)
 
-    for x, y in line_set:
-        if (x, y) in grid:
-            grid[(x, y)] += 1
-        else:
-            grid[(x, y)] = 1
+        for x, y in line_set:
+            if (x, y) in grid:
+                grid[(x, y)] += 1
+            else:
+                grid[(x, y)] = 1
+
+    count_overlap = 0
+
+    for (x, y), nb_lines in grid.items():
+        if nb_lines > 1:
+            count_overlap += 1
+
+    print(f"Grid: {max_x+1}x{max_y+1} ({(max_x+1)*(max_y+1)} points)")
+    return count_overlap
 
 
-count_overlap = 0
+# TODO: Find part2
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
 
-for (x, y), nb_lines in grid.items():
-    if nb_lines > 1:
-        count_overlap += 1
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
 
-print(f"Grid: {max_x+1}x{max_y+1} ({(max_x+1)*(max_y+1)} points)")
-print(count_overlap)
+    print(f"Part 1: {part1(instruction_list)}")
