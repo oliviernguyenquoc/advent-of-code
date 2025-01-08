@@ -79,10 +79,6 @@ def part1(instruction_list, is_test=False):
         for robot in robot_list:
             robot_count[robot.witch_quadrant()] += 1
 
-    print(robot_count)
-    print(
-        f"Part 1: {robot_count[1] * robot_count[2] * robot_count[3] * robot_count[4]}"
-    )
     return robot_count[1] * robot_count[2] * robot_count[3] * robot_count[4]
 
 
@@ -109,7 +105,6 @@ def part2(instruction_list):
         if "############################" in robot_positions[robot.p_y]:
             break
 
-    print(f"Part 2: {i+1}")
     return i + 1
 
 
@@ -119,5 +114,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

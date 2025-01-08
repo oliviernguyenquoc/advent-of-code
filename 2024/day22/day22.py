@@ -39,7 +39,6 @@ def solve(instruction_list, part=1):
         all_secret_nb_seq.append(buyer_sn)
 
     if part == 1:
-        print(f"Part 1: {sum(res_part1)}")
         return sum(res_part1)
 
     all_diffs = []
@@ -66,7 +65,6 @@ def solve(instruction_list, part=1):
                 four_seq_mem[searched_seq] += int(str(secret_nb_seq[i + 3])[-1])
                 tmp_mem[searched_seq] = True
 
-    print(f"Part 2: {max(four_seq_mem.values())}")
     return max(four_seq_mem.values())
 
 
@@ -76,5 +74,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

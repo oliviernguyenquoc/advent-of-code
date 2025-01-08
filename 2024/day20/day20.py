@@ -85,7 +85,6 @@ def part1(instruction_list, is_test=False):
                 shortcut_length = (j - i) - manathan_distance(point1, point2)
                 all_scores.append(shortcut_length)
 
-    print(f"Part1: {len([score for score in all_scores if score >= TIME_THRESHOLD])}")
     return len([score for score in all_scores if score >= TIME_THRESHOLD])
 
 
@@ -105,7 +104,6 @@ def part2(instruction_list, is_test=False):
                 shortcut_length = (j - i) - manathan_distance(point, point2)
                 all_scores.append(shortcut_length)
 
-    print(f"Part2: {len([score for score in all_scores if score >= TIME_THRESHOLD])}")
     return len([score for score in all_scores if score >= TIME_THRESHOLD])
 
 
@@ -115,5 +113,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

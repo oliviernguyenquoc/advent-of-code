@@ -23,7 +23,6 @@ def part1(instruction_list):
         if all([key[i] + lock[i] <= 7 for i in range(5)]):
             nb_match += 1
 
-    print(f"Part 1: {nb_match}")
     return nb_match
 
 
@@ -33,4 +32,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")

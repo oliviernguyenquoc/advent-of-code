@@ -55,7 +55,6 @@ def part1(instruction_list, is_test):
 
     result = find_shortest_path_length(incoming_bytes[:NB_BYTES]) - 1
 
-    print(f"Part 1: {result}")
     return result
 
 
@@ -84,7 +83,6 @@ def part2(instruction_list, is_test):
     print(
         f"First byte to make the exit blocked is the number {min_bytes}: {incoming_bytes[nb_bytes]}"
     )
-    print(f"Part 2: {incoming_bytes[nb_bytes][0]},{incoming_bytes[nb_bytes][1]}")
     return f"{incoming_bytes[nb_bytes][0]},{incoming_bytes[nb_bytes][1]}"
 
 
@@ -96,5 +94,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list, IS_TEST)
-    part2(instruction_list, IS_TEST)
+    print(f"Part 1: {part1(instruction_list, IS_TEST)}")
+    print(f"Part 2: {part1(instruction_list, IS_TEST)}")

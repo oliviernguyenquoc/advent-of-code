@@ -30,7 +30,6 @@ def part1(instruction_list):
                 if joined_str == "XMAS":
                     count_xmas += 1
 
-    print(f"Part 1: {count_xmas}")
     return count_xmas
 
 
@@ -40,4 +39,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")

@@ -32,7 +32,6 @@ def part1(instruction_list):
 
         res.append(nb)
 
-    print(f"Par 1: {sum(res)}")
     return sum(res)
 
 
@@ -42,4 +41,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")

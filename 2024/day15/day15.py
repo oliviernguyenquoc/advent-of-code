@@ -81,7 +81,6 @@ def part1(instruction_list):
     for x, y in boxes:
         total += x + 100 * y
 
-    print(f"Part1: {total}")
     return total
 
 
@@ -91,4 +90,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")

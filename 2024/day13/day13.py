@@ -65,7 +65,6 @@ def part1(instruction_list):
         )
         total += 3 * nb_button_1 + nb_button_2
 
-    print(f"Part 1: {total}")
     return total
 
 
@@ -97,7 +96,6 @@ def part2(instruction_list):
         )
         total += 3 * nb_button_1 + nb_button_2
 
-    print(f"Part 2: {total}")
     return total
 
 
@@ -107,5 +105,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

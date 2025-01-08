@@ -29,7 +29,6 @@ def part1(instruction_list):
     for i, idx in disk_map:
         total += i * idx
 
-    print(f"Part 1: {total}")
     return total
 
 
@@ -38,3 +37,5 @@ if __name__ == "__main__":
 
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")

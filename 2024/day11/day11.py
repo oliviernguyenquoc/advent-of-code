@@ -33,7 +33,6 @@ def solve(instruction_list, part=1):
         nb_counter = blink(nb_counter)
         len_nb_list.append(len(nb_counter.keys()))
 
-    print(f"Part {part}: {sum(nb_counter.values())}")
     return sum(nb_counter.values())
 
 
@@ -43,5 +42,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

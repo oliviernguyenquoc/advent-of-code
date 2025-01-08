@@ -69,9 +69,6 @@ def part1(instruction_list):
     program, a, b, c = parse_data(instruction_list)
     output = run_program(program, a, b, c)
 
-    print(f"Program: {program}")
-    print(f"Part 1: {",".join(map(str, output))}")
-
     return ",".join(map(str, output))
 
 
@@ -86,8 +83,6 @@ def part2(instruction_list):
         while run_program(program, A, 0, 0) != program[i:]:
             A += 1
 
-    print(f"Program: {program}")
-    print(f"Part 2: {A}")
     return A
 
 
@@ -97,5 +92,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

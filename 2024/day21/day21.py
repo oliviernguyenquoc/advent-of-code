@@ -144,7 +144,7 @@ def solve(instruction_list, part=1):
     for code, len_output in res_dict.items():
         nb = re.search(r"(\d+)[A-Z]*", code).groups()[0]
         total += int(nb) * len_output
-    print(f"Part {part}: {total}")
+
     return total
 
 
@@ -153,5 +153,6 @@ if __name__ == "__main__":
 
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

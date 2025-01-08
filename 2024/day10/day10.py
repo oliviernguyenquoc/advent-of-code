@@ -48,7 +48,6 @@ def part1(instruction_list):
     for x, y in trail_head_list:
         total += get_score(grid, x, y)
 
-    print(f"Part 1: {total}")
     return total
 
 
@@ -78,7 +77,6 @@ def part2(instruction_list):
     for x, y in trail_head_list:
         total_part2 += get_score_part2(grid, x, y)
 
-    print(f"Part 2: {total_part2}")
     return total_part2
 
 
@@ -87,3 +85,6 @@ if __name__ == "__main__":
 
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

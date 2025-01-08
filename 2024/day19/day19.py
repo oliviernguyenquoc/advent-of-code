@@ -25,7 +25,6 @@ def part1(instruction_list):
         if is_stripes_possible(stripes_to_find, towel_stock):
             total += 1
 
-    print(f"Part 1: {total}")
     return total
 
 
@@ -35,4 +34,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")

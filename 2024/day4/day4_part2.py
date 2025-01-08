@@ -24,7 +24,6 @@ def part2(instruction_list):
             ):
                 count_xmas += 1
 
-    print(f"Part 2: {count_xmas}")
     return count_xmas
 
 
@@ -34,4 +33,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part2(instruction_list)
+    print(f"Part 2: {part2(instruction_list)}")

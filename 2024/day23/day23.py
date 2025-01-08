@@ -30,7 +30,6 @@ def solve(instruction_list, part=1):
     )
 
     if part == 1:
-        print(f"Part 1: {len(ring_list_t)}")
         return len(ring_list_t)
 
     max_seq_length_found = (3, "")
@@ -52,7 +51,6 @@ def solve(instruction_list, part=1):
                 if len(seq) > max_seq_length_found[0]:
                     max_seq_length_found = (len(seq), element)
 
-    print(f"Part 2: {",".join(sorted(ring_dict[max_seq_length_found[1]]))}")
     return ",".join(sorted(ring_dict[max_seq_length_found[1]]))
 
 
@@ -62,5 +60,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

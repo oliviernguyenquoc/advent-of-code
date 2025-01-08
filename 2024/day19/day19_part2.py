@@ -37,7 +37,6 @@ def part2(instruction_list):
         nb_stripes = nb_stripes_possible(stripes_to_find, towel_stock, new_memory)
         total_part2 += nb_stripes
 
-    print(f"Part 2: {total_part2}")
     return total_part2
 
 
@@ -47,4 +46,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part2(instruction_list)
+    print(f"Part 2: {part2(instruction_list)}")

@@ -35,7 +35,6 @@ def solve(instruction_list, part=1):
             update_not_ok.append(programmed_update)
 
     middle_list = [upd[len(upd) // 2] for upd in update_ok]
-    print(f"Part 1: {sum(middle_list)}")
 
     if part == 1:
         return sum(middle_list)
@@ -63,7 +62,6 @@ def solve(instruction_list, part=1):
         update_corrected.append(programmed_update)
 
     middle_list = [upd[len(upd) // 2] for upd in update_corrected]
-    print(f"Part 2: {sum(middle_list)}")
 
     return sum(middle_list)
 
@@ -74,5 +72,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

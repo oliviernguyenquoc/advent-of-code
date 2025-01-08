@@ -1,6 +1,7 @@
 from collections import defaultdict
 from tqdm import tqdm
 import copy
+import pathlib
 
 
 def test_loop(
@@ -61,37 +62,52 @@ def test_loop(
     )
 
 
-with open("./2024/day6/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.readlines()
+def solve(instruction_list, part):
+    grid = [instruction.strip() for instruction in instruction_list]
 
-grid = [instruction.strip() for instruction in instruction_list]
+    obstacle_list = [
+        (x, y)
+        for y in range(len(grid))
+        for x in range(len(grid[0]))
+        if grid[y][x] == "#"
+    ]
 
-obstacle_list = [
-    (x, y) for y in range(len(grid)) for x in range(len(grid[0])) if grid[y][x] == "#"
-]
+    start_x, start_y = [
+        (x, y)
+        for y in range(len(grid))
+        for x in range(len(grid[0]))
+        if grid[y][x] == "^"
+    ][0]
 
-start_x, start_y = [
-    (x, y) for y in range(len(grid)) for x in range(len(grid[0])) if grid[y][x] == "^"
-][0]
-DIRECTIONS = [(0, -1), (1, 0), (0, 1), (-1, 0)]
-is_loop, position_visited = test_loop(grid, obstacle_list, start_x, start_y)
+    is_loop, position_visited = test_loop(grid, obstacle_list, start_x, start_y)
 
-print(f"Part 1: {len(position_visited)}")
+    if part == 1:
+        return len(position_visited)
 
-possible_obstacle_list = copy.deepcopy(position_visited)
+    possible_obstacle_list = copy.deepcopy(position_visited)
 
-print(f"{len(possible_obstacle_list)} points to check")
+    print(f"{len(possible_obstacle_list)} points to check")
 
-nb_possible_obstacle_loop = 0
-for i, (x, y) in tqdm(enumerate(possible_obstacle_list)):
-    # print(f"Point n°{i}: ({x}, {y})")
-    is_loop, position_visited = test_loop(
-        grid,
-        obstacle_list=obstacle_list + [(x, y)],
-        position_x=start_x,
-        position_y=start_y,
-    )
-    if grid[y][x] not in obstacle_list and is_loop:
-        nb_possible_obstacle_loop += 1
+    nb_possible_obstacle_loop = 0
+    for i, (x, y) in tqdm(enumerate(possible_obstacle_list)):
+        # print(f"Point n°{i}: ({x}, {y})")
+        is_loop, position_visited = test_loop(
+            grid,
+            obstacle_list=obstacle_list + [(x, y)],
+            position_x=start_x,
+            position_y=start_y,
+        )
+        if grid[y][x] not in obstacle_list and is_loop:
+            nb_possible_obstacle_loop += 1
 
-print(f"Part 2: {nb_possible_obstacle_loop}")
+    return nb_possible_obstacle_loop
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

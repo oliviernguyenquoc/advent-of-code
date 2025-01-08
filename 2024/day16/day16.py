@@ -83,9 +83,6 @@ def solve(instruction_list, part=1):
                 heapq.heappush(pqueue, (new_cost, *next_position))
 
     if part == 1:
-        print(
-            f"Part 1: {min(distances[(*end, Direction.NORTH)], distances[(*end, Direction.EST)])}"
-        )
         return min(distances[(*end, Direction.NORTH)], distances[(*end, Direction.EST)])
 
     paths = [[(*end, Direction.NORTH)]]
@@ -102,7 +99,6 @@ def solve(instruction_list, part=1):
     for path in paths:
         all_coordinates |= set((coord[0], coord[1]) for coord in path)
 
-    print(f"Part 2: {len(all_coordinates)}")
     return len(all_coordinates)
 
 
@@ -112,5 +108,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    solve(instruction_list, part=1)
-    solve(instruction_list, part=2)
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

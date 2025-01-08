@@ -29,7 +29,6 @@ def part1(instruction_list):
             if (0 <= 2 * x1 - x2 < x_len) and (0 <= 2 * y1 - y2 < y_len):
                 antinodes.add((2 * x1 - x2, 2 * y1 - y2))
 
-    print(f"Part 1: {len(antinodes)}")
     return len(antinodes)
 
 
@@ -59,7 +58,6 @@ def part2(instruction_list):
     all_antenas = set(
         antena for antena_list in antenna_freq_dict.values() for antena in antena_list
     )
-    print(f"Part 2: {len(antinodes_part2.union(all_antenas))}")
     return len(antinodes_part2.union(all_antenas))
 
 
@@ -69,5 +67,5 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
-    part1(instruction_list)
-    part2(instruction_list)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")
