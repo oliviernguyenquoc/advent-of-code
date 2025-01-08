@@ -1,6 +1,8 @@
 import pytest
 import pathlib
-from .day03 import part1, part2
+from .day03 import part1
+from .day03_2 import part2
+
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
