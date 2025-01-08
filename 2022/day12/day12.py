@@ -2,12 +2,6 @@ import copy
 import string
 from dataclasses import dataclass
 
-with open("./day12/input.txt", encoding="utf-8") as f:
-    grid: list[list[str]] = [list(line) for line in f.read().splitlines()]
-
-PART: int = 1
-ALPHABET: str = string.ascii_lowercase[:-1] + "E"
-
 
 @dataclass
 class Node:
@@ -43,6 +37,8 @@ def get_all_start(grid: list[list[str]]) -> list[Node]:
 
 
 def check_available_neighbours(grid: list[list[str]], node: Node) -> list[Node]:
+    ALPHABET: str = string.ascii_lowercase
+
     node_available: list[Node] = []
 
     MOVES = [
@@ -59,13 +55,16 @@ def check_available_neighbours(grid: list[list[str]], node: Node) -> list[Node]:
     else:
         CURRENT_LETTER_IDX = 0
 
-    POSSIBLE_LETTERS = ALPHABET[: CURRENT_LETTER_IDX + 2]
+    possible_letters = ALPHABET[: CURRENT_LETTER_IDX + 2]
+
+    if CURRENT_LETTER in ("y", "z"):
+        possible_letters += "E"
 
     for next_x, next_y in MOVES:
         if (
             0 <= next_x < len(grid[0])
             and 0 <= next_y < len(grid)
-            and grid[next_y][next_x] in POSSIBLE_LETTERS
+            and grid[next_y][next_x] in possible_letters
         ):
             node_available.append(
                 Node(next_x, next_y, grid[next_y][next_x], node.score + 1)
@@ -74,41 +73,52 @@ def check_available_neighbours(grid: list[list[str]], node: Node) -> list[Node]:
     return node_available
 
 
-if PART == 1:
-    all_start_nodes = [get_start(grid)]
-else:
-    all_start_nodes = get_all_start(grid)
+def solve(instruction_list, part):
+    grid: list[list[str]] = [list(line) for line in instruction_list]
 
-all_end_nodes: list[Node] = []
+    if part == 1:
+        all_start_nodes = [get_start(grid)]
+    else:
+        all_start_nodes = get_all_start(grid)
 
-for start_node in all_start_nodes:
-    end = Node(0, 0, "E", 0)
+    all_end_nodes: list[Node] = []
 
-    visited: set[tuple[int, int]] = {(start_node.x, start_node.y)}
-    queue: list[Node] = [start_node]
+    for start_node in all_start_nodes:
+        end = Node(0, 0, "E", 0)
 
-    while queue:
-        node = queue.pop(0)
+        visited: set[tuple[int, int]] = {(start_node.x, start_node.y)}
+        queue: list[Node] = [start_node]
 
-        if node.letter == "E":
-            end = node
-            print(node)
-            break
+        while queue:
+            node = queue.pop(0)
 
-        node_available_list = check_available_neighbours(grid, node)
+            if node.letter == "E":
+                end = node
 
-        for next_node in node_available_list:
-            if (next_node.x, next_node.y) not in visited:
-                queue.append(next_node)
-                visited.add((next_node.x, next_node.y))
+                break
 
-    print(start_node)
-    all_end_nodes.append(copy.copy(end))
+            node_available_list = check_available_neighbours(grid, node)
 
-# Get minimum of path length
-min_score = 1000000
-for node in all_end_nodes:
-    if node.score != 0 and node.score < min_score:
-        min_score = node.score
+            for next_node in node_available_list:
+                if (next_node.x, next_node.y) not in visited:
+                    queue.append(next_node)
+                    visited.add((next_node.x, next_node.y))
 
-print(min_score)
+        # print(start_node)
+        all_end_nodes.append(copy.copy(end))
+
+    # Get minimum of path length
+    min_score = 1000000
+    for node in all_end_nodes:
+        if node.score != 0 and node.score < min_score:
+            min_score = node.score
+
+    return min_score
+
+
+if __name__ == "__main__":
+    with open("./2022/day12/test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")
