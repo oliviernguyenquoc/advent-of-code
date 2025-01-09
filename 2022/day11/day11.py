@@ -3,20 +3,7 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
-
-PART_1: bool = False  # True
-NB_ROUND: int = 10000  # 20
-
-with open("./day11/input.txt", encoding="utf-8") as f:
-    instructions: str = f.read()
-
-values = re.findall(
-    r"""Monkey ([0-9]*):\n  Starting items: ([0-9 ,]*)
-  Operation: new = old (.) (.*)\n  Test: divisible by ([0-9]*)
-    If true: throw to monkey ([0-9]*)
-    If false: throw to monkey ([0-9]*)""",
-    instructions,
-)
+import pathlib
 
 
 @dataclass
@@ -40,7 +27,7 @@ class Monkey:
         self.monkey_test_true = true_monkey
         self.monkey_test_false = false_monkey
 
-    def round(self):
+    def round(self, gcd, part):
         for item in self.item_list:
             # Inspect item
             match self.operation:
@@ -61,10 +48,10 @@ class Monkey:
                         item.worry_level *= item.worry_level
 
             # Level of stress decrease
-            if PART_1:
+            if part == 1:
                 item.worry_level = math.floor(item.worry_level / 3)
             else:
-                item.worry_level = item.worry_level % GCD
+                item.worry_level = item.worry_level % gcd
 
             # Test item
             if item.worry_level % self.test_number == 0:
@@ -75,41 +62,67 @@ class Monkey:
         self.item_list = []
 
 
-monkey_list: list[Monkey] = []
+def solve(instructions, part):
+    if part == 1:
+        NB_ROUND: int = 20
+    else:
+        NB_ROUND: int = 10000
 
-for value in values:
-    monkey_list.append(
-        Monkey(
-            id=int(value[0]),
-            item_list=[Item(int(item)) for item in value[1].split(", ")],
-            operation=value[2],
-            operation_number=value[3],
-            test_number=int(value[4]),
-            monkey_test_true_int=int(value[5]),
-            monkey_test_false_int=int(value[6]),
+    values = re.findall(
+        r"""Monkey ([0-9]*):\n  Starting items: ([0-9 ,]*)
+    Operation: new = old (.) (.*)\n  Test: divisible by ([0-9]*)
+        If true: throw to monkey ([0-9]*)
+        If false: throw to monkey ([0-9]*)""",
+        instructions,
+    )
+
+    monkey_list: list[Monkey] = []
+
+    for value in values:
+        monkey_list.append(
+            Monkey(
+                id=int(value[0]),
+                item_list=[Item(int(item)) for item in value[1].split(", ")],
+                operation=value[2],
+                operation_number=value[3],
+                test_number=int(value[4]),
+                monkey_test_true_int=int(value[5]),
+                monkey_test_false_int=int(value[6]),
+            )
         )
-    )
 
-print(len(monkey_list))
-GCD = 1
+    # if part == 1:
+    #     return len(monkey_list)
 
-for monkey in monkey_list:
-    monkey.load_test_monkeys(
-        true_monkey=monkey_list[monkey.monkey_test_true_int],
-        false_monkey=monkey_list[monkey.monkey_test_false_int],
-    )
-    GCD *= monkey.test_number
+    gcd = 1
 
-monkey_dict: dict[int, int] = {i: 0 for i in range(len(monkey_list))}
+    for monkey in monkey_list:
+        monkey.load_test_monkeys(
+            true_monkey=monkey_list[monkey.monkey_test_true_int],
+            false_monkey=monkey_list[monkey.monkey_test_false_int],
+        )
+        gcd *= monkey.test_number
 
-for round_number in range(NB_ROUND):
-    print(f"Round {round_number}")
-    for monkey_idx, monkey in enumerate(monkey_list):
-        monkey_dict[monkey_idx] += len(monkey.item_list)
-        monkey.round()
+    monkey_dict: dict[int, int] = {i: 0 for i in range(len(monkey_list))}
 
-print(monkey_dict)
+    for round_number in range(NB_ROUND):
+        # print(f"Round {round_number}")
+        for monkey_idx, monkey in enumerate(monkey_list):
+            monkey_dict[monkey_idx] += len(monkey.item_list)
+            monkey.round(gcd=gcd, part=part)
 
-higher_items_inspections = sorted(list(monkey_dict.values()))[-2:]
-monkey_business = higher_items_inspections[0] * higher_items_inspections[1]
-print(monkey_business)
+    print(monkey_dict)
+
+    higher_items_inspections = sorted(list(monkey_dict.values()))[-2:]
+    monkey_business = higher_items_inspections[0] * higher_items_inspections[1]
+    return monkey_business
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instructions: str = f.read()
+
+    print(f"Part 1: {solve(instructions, part=1)}")
+    print(f"Part 2: {solve(instructions, part=2)}")

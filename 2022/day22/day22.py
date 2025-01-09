@@ -1,8 +1,6 @@
 import re
 from dataclasses import dataclass
-
-with open("./day22/input.txt", encoding="utf-8") as f:
-    instruction_list: list[str] = f.read().splitlines()
+import pathlib
 
 DIRECTION_LIST: list[str] = ["R", "D", "L", "U"]
 MOVE_DICT: dict[str, tuple[int, int]] = {
@@ -11,13 +9,6 @@ MOVE_DICT: dict[str, tuple[int, int]] = {
     "L": (-1, 0),
     "U": (0, -1),
 }
-
-path: str = instruction_list[-1]
-
-path_list = re.split(r"(\d+)", path)
-map_temp = instruction_list[:-2]
-WIDTH = max([len(row) for row in map_temp])
-HIGHT = len(map_temp)
 
 
 @dataclass
@@ -153,40 +144,71 @@ class Cursor:
         return x, y, direction
 
 
-# Add missing spaces
-map_temp = [row + (" " * (WIDTH - len(row))) for row in map_temp]
+def part1(instruction_list):
+    path: str = instruction_list[-1]
+
+    path_list = re.split(r"(\d+)", path)
+    map_temp = instruction_list[:-2]
+
+    global WIDTH, HIGHT
+    WIDTH = max([len(row) for row in map_temp])
+    HIGHT = len(map_temp)
+
+    # Add missing spaces
+    map_temp = [row + (" " * (WIDTH - len(row))) for row in map_temp]
+
+    # PART 1
+    cursor = Cursor(map_temp[0].index("."), 0, "R", map=map_temp)
+
+    for instruction in path_list:
+        if instruction.isnumeric():
+            cursor.move(nb_steps=int(instruction), part=1)
+        elif instruction == "R":
+            cursor.turn_right()
+        elif instruction == "L":
+            cursor.turn_left()
+
+    return (
+        1000 * (cursor.j + 1)
+        + 4 * (cursor.i + 1)
+        + DIRECTION_LIST.index(cursor.direction)
+    )
 
 
-# PART 1
-cursor = Cursor(map_temp[0].index("."), 0, "R", map=map_temp)
+def part2(instruction_list):
+    path: str = instruction_list[-1]
 
-for instruction in path_list:
-    if instruction.isnumeric():
-        cursor.move(nb_steps=int(instruction), part=1)
-    elif instruction == "R":
-        cursor.turn_right()
-    elif instruction == "L":
-        cursor.turn_left()
+    path_list = re.split(r"(\d+)", path)
+    map_temp = instruction_list[:-2]
 
-print(
-    f"Result part 1: {1000 * (cursor.j + 1) + 4 * (cursor.i + 1) + DIRECTION_LIST.index(cursor.direction)}"
-)
+    global WIDTH, HIGHT
+    WIDTH = max([len(row) for row in map_temp])
+    HIGHT = len(map_temp)
+    cursor = Cursor(map_temp[0].index("."), 0, "R", map=map_temp)
+
+    for instruction in path_list:
+        # print(instruction)
+
+        if instruction.isnumeric():
+            cursor.move(nb_steps=int(instruction), part=2, test_exemple=False)
+        elif instruction == "R":
+            cursor.turn_right()
+        elif instruction == "L":
+            cursor.turn_left()
+        print(cursor.i, cursor.j, cursor.direction)
+
+    return (
+        1000 * (cursor.j + 1)
+        + 4 * (cursor.i + 1)
+        + DIRECTION_LIST.index(cursor.direction)
+    )
 
 
-# PART 2
-cursor = Cursor(map_temp[0].index("."), 0, "R", map=map_temp)
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
 
-for instruction in path_list:
-    # print(instruction)
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
 
-    if instruction.isnumeric():
-        cursor.move(nb_steps=int(instruction), part=2, test_exemple=False)
-    elif instruction == "R":
-        cursor.turn_right()
-    elif instruction == "L":
-        cursor.turn_left()
-    print(cursor.i, cursor.j, cursor.direction)
-
-print(
-    f"Result part 2: {1000 * (cursor.j + 1) + 4 * (cursor.i + 1) + DIRECTION_LIST.index(cursor.direction)}"
-)
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")
