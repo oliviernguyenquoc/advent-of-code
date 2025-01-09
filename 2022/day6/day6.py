@@ -1,3 +1,6 @@
+import pathlib
+
+
 def solve(instruction_list, part):
     if part == 1:
         BUFFER_SIZE = 4
@@ -24,7 +27,9 @@ def solve(instruction_list, part):
 
 
 if __name__ == "__main__":
-    with open("./day6/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {solve(instruction_list, part=1)}")

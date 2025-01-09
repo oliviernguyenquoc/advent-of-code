@@ -1,3 +1,18 @@
+import pathlib
+
+
+def count_nb_tree_scenic(height: int, trees: list[int]) -> int:
+    res = 0
+    for tree in trees:
+        if tree < height:
+            res += 1
+        else:
+            res += 1
+            break
+
+    return res
+
+
 def part2(instruction_list):
     forest = []
 
@@ -6,17 +21,6 @@ def part2(instruction_list):
 
     n = len(instruction_list[0])
     m = len(instruction_list)
-
-    def count_nb_tree_scenic(height: int, trees: list[int]) -> int:
-        res = 0
-        for tree in trees:
-            if tree < height:
-                res += 1
-            else:
-                res += 1
-                break
-
-        return res
 
     scenic_matrix: list[list[int]] = [[0 for _ in range(n)] for _ in range(m)]
 
@@ -52,7 +56,9 @@ def part2(instruction_list):
 
 
 if __name__ == "__main__":
-    with open("./day8/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 2: {part2(instruction_list)}")

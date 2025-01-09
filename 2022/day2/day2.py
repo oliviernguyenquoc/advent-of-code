@@ -1,3 +1,6 @@
+import pathlib
+
+
 def part1(instruction_list):
     guide_dict: dict[str, dict[str, int]] = {
         "A": {
@@ -28,7 +31,9 @@ def part1(instruction_list):
 
 
 if __name__ == "__main__":
-    with open("./day2/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {part1(instruction_list)}")
