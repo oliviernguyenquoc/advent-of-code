@@ -32,6 +32,11 @@ def change_neighbours(grid: list[list[int]], i: int, j: int) -> list[list[int]]:
     return grid
 
 
+def print_grid(grid_octopus):
+    for i in range(len(grid_octopus)):
+        print(grid_octopus[i])
+
+
 def solve(instruction_list, part):
     if part == 1:
         STEP_NUMBER = 100
@@ -65,12 +70,12 @@ def solve(instruction_list, part):
             step_all_flash = step
             break
 
-    for i in range(len(grid_octopus)):
-        print(grid_octopus[i])
-    # print(new_grid_octopus)
-    print(nb_total_flash)
-    return step_all_flash + 1
-    # print(count_number_nine([[2, 2, 2, 2, 2], [2, 10, 10, 10, 2], [2, 10, 2, 10, 2], [2, 10, 10, 10, 2], [2, 2, 2, 2, 2]],2,2))
+    print_grid(grid_octopus)
+
+    if part == 1:
+        return nb_total_flash
+    else:
+        return step_all_flash + 1
 
 
 if __name__ == "__main__":

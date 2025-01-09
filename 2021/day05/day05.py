@@ -81,7 +81,7 @@ def test_generate_set_with_diag():
 # exit(0)
 
 
-def part1(instruction_list):
+def solve(instruction_list, part):
     max_x, max_y = 0, 0
     grid: dict[tuple[int, int], int] = {}
 
@@ -93,8 +93,10 @@ def part1(instruction_list):
         max_x = max(max_x, x1, x2)
         max_y = max(max_y, y1, y2)
 
-        # line_set = generate_set(x1, y1, x2, y2) # PART 1
-        line_set = generate_set_with_diag(x1, y1, x2, y2)
+        if part == 1:
+            line_set = generate_set(x1, y1, x2, y2)
+        else:
+            line_set = generate_set_with_diag(x1, y1, x2, y2)
 
         for x, y in line_set:
             if (x, y) in grid:
@@ -112,11 +114,11 @@ def part1(instruction_list):
     return count_overlap
 
 
-# TODO: Find part2
 if __name__ == "__main__":
     PUZZLE_DIR = pathlib.Path(__file__).parent
 
-    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
-    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

@@ -1,5 +1,4 @@
 import networkx as nx
-from typing import list, dict, tuple
 import matplotlib.pyplot as plt
 import pathlib
 

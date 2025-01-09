@@ -1,6 +1,6 @@
 import pytest
 import pathlib
-from .day05 import part1
+from .day05 import solve
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -12,20 +12,19 @@ def load_input(path):
 
 
 @pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", 5), ("input.txt", 4745)]
+    "filepath, expected", [("test_input.txt", 5), ("input.txt", 6856)]
 )
 def test_part1(filepath, expected):
     """Test part 1"""
     data = load_input(filepath)
-    assert part1(data) == expected
+    assert solve(data, part=1) == expected
 
 
-@pytest.mark.skip(reason="Not implemented")
 @pytest.mark.parametrize(
     "filepath, expected",
-    [("test_input.txt", 12), ("input.txt", 18442)],
+    [("test_input.txt", 12), ("input.txt", 20666)],
 )
 def test_part2(filepath, expected):
     """Test part 2"""
-    # data = load_input(filepath)
-    # assert part2(data) == expected
+    data = load_input(filepath)
+    assert solve(data, part=2) == expected

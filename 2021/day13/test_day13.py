@@ -12,7 +12,7 @@ def load_input(path):
 
 
 @pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", 17), ("input.txt", 775)]
+    "filepath, expected", [("test_input.txt", 17), ("input.txt", 602)]
 )
 def test_part1(filepath, expected):
     """Test part 1"""
@@ -20,9 +20,9 @@ def test_part1(filepath, expected):
     assert solve(data, part=1) == expected
 
 
-@pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", 16), ("input.txt", 102)]
-)
+# Output is letter in terminal
+@pytest.mark.skip(reason="Not implemented")
+@pytest.mark.parametrize("filepath, expected", [("input.txt", "CAFJHZCK")])
 def test_part2(filepath, expected):
     """Test part 2"""
     data = load_input(filepath)

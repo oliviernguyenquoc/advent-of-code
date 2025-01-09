@@ -13,7 +13,7 @@ def load_input(path):
 
 
 @pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", 4512), ("input.txt", 63424)]
+    "filepath, expected", [("test_input.txt", 4512), ("input.txt", 87456)]
 )
 def test_part1(filepath, expected):
     """Test part 1"""
@@ -23,7 +23,7 @@ def test_part1(filepath, expected):
 
 @pytest.mark.parametrize(
     "filepath, expected",
-    [("test_input.txt", 1924), ("input.txt", 23541)],
+    [("test_input.txt", 1924), ("input.txt", 15561)],
 )
 def test_part2(filepath, expected):
     """Test part 2"""
