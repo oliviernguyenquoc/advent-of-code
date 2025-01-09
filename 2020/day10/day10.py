@@ -1,9 +1,8 @@
 import functools
-from typing import List
 import pathlib
 
 
-def count_adaptator_spaces(adaptator_list: List[int]) -> int:
+def count_adaptator_spaces(adaptator_list: list[int]) -> int:
     adaptator_list = sorted(adaptator_list)
     adaptator_list = [0] + adaptator_list + [adaptator_list[-1] + 3]
 
@@ -31,7 +30,7 @@ def _multiplier(n: int) -> int:
         return _multiplier(n - 1) + _multiplier(n - 2) + _multiplier(n - 3)
 
 
-def count_combination_adaptator(adaptator_list: List[int]) -> int:
+def count_combination_adaptator(adaptator_list: list[int]) -> int:
     nb_combination = 1
     adaptator_list = sorted(adaptator_list)
     adaptator_list = [0] + adaptator_list + [adaptator_list[-1] + 3]

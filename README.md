@@ -15,3 +15,15 @@ Results can be generated with pytest custom pluggin:
 
 ![Alt text](./results_2023.svg)
 </details>
+
+<details>
+<summary>AoC 2022 results</summary>
+
+![Alt text](./results_2022.svg)
+</details>
+
+<details>
+<summary>AoC 2021 results</summary>
+
+![Alt text](./results_2021.svg)
+</details>

@@ -9,7 +9,11 @@ wheels/
 # Virtual environments
 .venv
 
+.ruff_cache
+.pytest_cache
+
 .vscode
 .DS_Store
 
+# Because of AoC rules
 input.txt
