@@ -1,3 +1,5 @@
+import pathlib
+
 def check_if_adjacent(instructions: list[str], row_number: int, i: int, j: int) -> bool:
     # Check left side
     if i > 0:
@@ -68,6 +70,8 @@ def part1(instructions: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    with open("./day3/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
     print(f"Part 1: {part1(instruction_list)}")

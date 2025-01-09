@@ -1,4 +1,5 @@
 import dataclasses
+import pathlib
 
 
 @dataclasses.dataclass
@@ -149,7 +150,9 @@ def solve(instruction_list, part, start="7"):
 
 
 if __name__ == "__main__":
-    with open("./2023/day10/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {solve(instruction_list, part=1)}")

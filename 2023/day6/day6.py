@@ -1,6 +1,6 @@
 import re
 import math
-
+import pathlib
 
 def compute_min_max_time(time: int, record_dist: int) -> tuple[int, int]:
     min_time = math.ceil((time - math.sqrt(time**2 - 4 * record_dist)) / 2)
@@ -47,7 +47,9 @@ def part2(instructions):
 
 
 if __name__ == "__main__":
-    with open("./day6/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {part1(instruction_list)}")
