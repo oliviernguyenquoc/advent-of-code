@@ -1,6 +1,7 @@
 import re
 import dataclasses
 import itertools
+import pathlib
 
 
 @dataclasses.dataclass
@@ -183,7 +184,9 @@ def part2(instructions):
 
 
 if __name__ == "__main__":
-    with open("./day5/test_input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instructions: list[str] = f.readlines()
 
     print(f"Part 2: {part2(instructions)}")

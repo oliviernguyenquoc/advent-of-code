@@ -2,6 +2,7 @@ import re
 import copy
 import itertools
 import math
+import pathlib
 
 
 def part2(instructions):
@@ -46,6 +47,8 @@ def part2(instructions):
 
 
 if __name__ == "__main__":
-    with open("./2023/day8/test_input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
     print(f"Part 2: {part2(instruction_list)}")

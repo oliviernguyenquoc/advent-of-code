@@ -1,6 +1,9 @@
 import networkx as nx
+import pathlib
 
-with open("./2023/day17/test_input.txt", encoding="utf-8") as f:
+PUZZLE_DIR = pathlib.Path(__file__).parent
+
+with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
     instruction_list: list[str] = f.readlines()
 
 grid = [instruction.strip() for instruction in instruction_list]

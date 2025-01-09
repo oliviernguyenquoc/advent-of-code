@@ -1,4 +1,5 @@
 import re
+import pathlib
 
 
 def part1(instructions):
@@ -25,6 +26,8 @@ def part1(instructions):
 
 
 if __name__ == "__main__":
-    with open("./day8/test_input_part2.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
     print(f"Part 1: {part1(instruction_list)}")

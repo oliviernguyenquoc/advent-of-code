@@ -1,4 +1,5 @@
 import copy
+import pathlib
 
 
 def tilt(
@@ -74,7 +75,9 @@ def part2(instruction_list, cycle_length=9):
 
 
 if __name__ == "__main__":
-    with open("./day14/test_input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 2: {part2(instruction_list, 13)}")
