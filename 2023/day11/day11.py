@@ -1,4 +1,5 @@
 import copy
+import pathlib
 
 
 def expand_space(grid: list[str], nb_spaces: int = 0) -> list[str]:
@@ -86,7 +87,9 @@ def solve(instruction_list, part, multiplier=500000):
 
 
 if __name__ == "__main__":
-    with open("./day11/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {solve(instruction_list, part=1)}")

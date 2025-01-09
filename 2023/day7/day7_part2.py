@@ -1,5 +1,6 @@
 import itertools
 from collections import defaultdict
+import pathlib
 
 
 def get_strength(hand: str) -> int:
@@ -108,7 +109,9 @@ def part2(instructions):
 
 
 if __name__ == "__main__":
-    with open("./day7/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 2: {part2(instruction_list)}")

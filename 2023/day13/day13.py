@@ -1,3 +1,5 @@
+import pathlib
+
 def horizontal_comparison(figure: list[str], y: int) -> bool:
     len_y = len(figure)
     if y <= len_y // 2:
@@ -162,7 +164,9 @@ def part2(instruction_list):
 
 
 if __name__ == "__main__":
-    with open("./2023/day13/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
     print(f"Part 1: {part1(instruction_list)}")

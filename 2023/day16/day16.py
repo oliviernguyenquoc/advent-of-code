@@ -1,3 +1,5 @@
+import pathlib
+
 # x, y, direction(x, y)
 def nb_tiles_energized(
     grid, start_x: int, start_y: int, start_direction_x: int, start_direction_y: int
@@ -77,7 +79,9 @@ def part2(instruction_list):
 
 
 if __name__ == "__main__":
-    with open("./2023/day16/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {part1(instruction_list)}")

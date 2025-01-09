@@ -1,6 +1,7 @@
 import re
 from collections import defaultdict
 import math
+import pathlib
 
 
 def part2(instructions):
@@ -22,7 +23,9 @@ def part2(instructions):
 
 
 if __name__ == "__main__":
-    with open("./day2/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
     print(f"Part 2: {part2(instruction_list)}")

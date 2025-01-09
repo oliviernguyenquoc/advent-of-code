@@ -1,3 +1,5 @@
+import pathlib
+
 def solve(instruction_list, part):
     total_part1, total_part2 = 0, 0
     for instruction in instruction_list:
@@ -29,7 +31,9 @@ def solve(instruction_list, part):
 
 
 if __name__ == "__main__":
-    with open("./day9/input.txt", encoding="utf-8") as f:
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
     print(f"Part 1: {solve(instruction_list, part=1)}")
     print(f"Part 2: {solve(instruction_list, part=2)}")
