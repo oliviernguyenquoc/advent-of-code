@@ -1,7 +1,7 @@
-from typing import List, Tuple
+import pathlib
 
 
-def check_there_is_two_number_sum(a: int, x: List[int]) -> bool:
+def check_there_is_two_number_sum(a: int, x: list[int]) -> bool:
     """O(nlog(n)) complexity, O(1) space algo Yeah !"""
 
     x = sorted(x)
@@ -19,7 +19,7 @@ def check_there_is_two_number_sum(a: int, x: List[int]) -> bool:
     return False
 
 
-def find_continuous_sum(a: int, x: List[int]) -> Tuple[int]:
+def find_continuous_sum(a: int, x: list[int]) -> tuple[int]:
     i, j = 0, 1
 
     while i != len(x) or j != len(x):
@@ -34,23 +34,36 @@ def find_continuous_sum(a: int, x: List[int]) -> Tuple[int]:
     return (0, 0)
 
 
-f = open("./day9/input.txt")
+def parse_data(nb_list):
+    nb_list = [int(nb) for nb in nb_list]
+    LEN_CHECK = 25
 
-nb_list = f.readlines()
-nb_list = [int(nb) for nb in nb_list]
-LEN_CHECK = 25
+    # Complexity n * k*log(k) with k=25
+    for i in range(len(nb_list) - LEN_CHECK):
+        if not check_there_is_two_number_sum(
+            nb_list[i + LEN_CHECK], nb_list[i : i + LEN_CHECK]
+        ):
+            break
 
-# Complexity n * k*log(k) with k=25
-for i in range(len(nb_list) - LEN_CHECK):
-    if not check_there_is_two_number_sum(
-        nb_list[i + LEN_CHECK], nb_list[i : i + LEN_CHECK]
-    ):
-        break
+    return nb_list, i, LEN_CHECK
 
-print(i)
-print(f"Solution 1: {nb_list[i + LEN_CHECK]}")
 
-a, b = find_continuous_sum(nb_list[i + LEN_CHECK], nb_list)
-print(f"Solution 2: {min(nb_list[a:b])+ max(nb_list[a:b])}")
+def part1(nb_list):
+    nb_list, i, LEN_CHECK = parse_data(nb_list)
+    return nb_list[i + LEN_CHECK]
 
-f.close()
+
+def part2(nb_list):
+    nb_list, i, LEN_CHECK = parse_data(nb_list)
+    a, b = find_continuous_sum(nb_list[i + LEN_CHECK], nb_list)
+    return min(nb_list[a:b]) + max(nb_list[a:b])
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

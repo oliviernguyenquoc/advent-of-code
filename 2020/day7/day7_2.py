@@ -1,10 +1,5 @@
 from day7_common import get_bag_dict
-
-f = open("./day7/input.txt")
-
-instruction_list = f.readlines()
-
-bag_dict = get_bag_dict(instruction_list)
+import pathlib
 
 
 def get_nb_bag(bag_type: str, bag_dict: dict):
@@ -22,7 +17,15 @@ def get_nb_bag(bag_type: str, bag_dict: dict):
     return total
 
 
-print(get_nb_bag("shiny gold", bag_dict) - 1)
+def part2(instruction_list):
+    bag_dict = get_bag_dict(instruction_list)
+    return get_nb_bag("shiny gold", bag_dict) - 1
 
 
-f.close()
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 2: {part2(instruction_list)}")

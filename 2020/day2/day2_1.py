@@ -1,19 +1,25 @@
-f = open("./day2/input.txt")
+import pathlib
 
-total_true_password = 0
 
-while True:
-    arr = f.readline().split()
-    if not arr:
-        break
+def part1(instruction_list):
+    total_true_password = 0
 
-    min_letter, max_letter = map(int, arr[0].split("-"))
-    letter = arr[1][0]
-    password = arr[2]
-    print((min_letter, max_letter, letter, password))
-    count_letter = password.count(letter)
-    if count_letter >= min_letter and count_letter <= max_letter:
-        total_true_password += 1
+    for arr in instruction_list:
+        min_letter, max_letter = map(int, arr[0].split("-"))
+        letter = arr[1][0]
+        password = arr[2]
+        print((min_letter, max_letter, letter, password))
+        count_letter = password.count(letter)
+        if count_letter >= min_letter and count_letter <= max_letter:
+            total_true_password += 1
 
-print(total_true_password)
-f.close()
+    return total_true_password
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.read().splitlines()
+
+    print(f"Part 1: {part1(instruction_list)}")

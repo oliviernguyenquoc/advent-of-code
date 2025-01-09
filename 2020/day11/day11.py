@@ -1,8 +1,8 @@
-from typing import List, Tuple
+import pathlib
 
 
 def list_seats_arround_part1(
-    position_list: list, seat_list: List[str], x: int, y: int, i: int, j: int
+    position_list: list, seat_list: list[str], x: int, y: int, i: int, j: int
 ):
     if (
         x + i >= 0
@@ -17,7 +17,7 @@ def list_seats_arround_part1(
 
 
 def list_seats_arround_part2(
-    position_list: list, seat_list: List[str], x: int, y: int, i: int, j: int
+    position_list: list, seat_list: list[str], x: int, y: int, i: int, j: int
 ):
     position_i = i
     position_j = j
@@ -39,8 +39,8 @@ def list_seats_arround_part2(
 
 
 def apply_rules_for_one_seat(
-    seat_list: List[str], x: int, y: int, part: int = 1
-) -> Tuple[str, int, int]:
+    seat_list: list[str], x: int, y: int, part: int = 1
+) -> tuple[str, int, int]:
     if seat_list[x][y] == ".":
         return None
 
@@ -80,7 +80,7 @@ def apply_rules_for_one_seat(
         return ("#", x, y)
 
 
-def iteration(seat_list: List[str], part: int = 1) -> List[str]:
+def iteration(seat_list: list[str], part: int = 1) -> list[str]:
     change_to_apply = []
     for x, seat_row in enumerate(seat_list):
         for y, _ in enumerate(seat_row):
@@ -103,27 +103,28 @@ def print_seat_list(seat_list):
         print(i)
 
 
-PART = 2
+def solve(seat_list, part):
+    # Appply first rule
+    seat_list = [line.replace("\n", "") for line in seat_list]
 
-f = open("./day11/input.txt")
-
-seat_list = f.readlines()
-# print(seat_list)
-
-# Appply first rule
-seat_list = [line.replace("\n", "") for line in seat_list]
-
-old_seat_list = seat_list.copy()
-
-seat_list = iteration(seat_list, part=PART)
-# print_seat_list(seat_list)
-
-while seat_list != old_seat_list:
     old_seat_list = seat_list.copy()
-    seat_list = iteration(seat_list, part=PART)
+
+    seat_list = iteration(seat_list, part=part)
     # print_seat_list(seat_list)
 
-print(sum([seat_row.count("#") for seat_row in seat_list]))
+    while seat_list != old_seat_list:
+        old_seat_list = seat_list.copy()
+        seat_list = iteration(seat_list, part=part)
+        # print_seat_list(seat_list)
+
+    return sum([seat_row.count("#") for seat_row in seat_list])
 
 
-f.close()
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

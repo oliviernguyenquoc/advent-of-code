@@ -1,10 +1,6 @@
 import functools
 from typing import List
-
-f = open("./day10/input.txt")
-
-adaptator_list = f.readlines()
-adaptator_list = [int(i) for i in adaptator_list]
+import pathlib
 
 
 def count_adaptator_spaces(adaptator_list: List[int]) -> int:
@@ -64,11 +60,23 @@ def count_combination_adaptator(adaptator_list: List[int]) -> int:
     return nb_combination
 
 
-nb = count_adaptator_spaces(adaptator_list)
-print(f"Answer part 1: {nb}")
+def part1(adaptator_list):
+    adaptator_list = [int(i) for i in adaptator_list]
+
+    nb = count_adaptator_spaces(adaptator_list)
+    return nb
 
 
-nb_combination = count_combination_adaptator(adaptator_list)
-print(f"Answer part 2: {nb_combination}")
+def part2(adaptator_list):
+    nb_combination = count_combination_adaptator(adaptator_list)
+    return nb_combination
 
-f.close()
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

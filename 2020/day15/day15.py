@@ -1,8 +1,8 @@
-from typing import List
+import pathlib
 
 
 def game(
-    starter_list: List[int],
+    starter_list: list[int],
     stop: int = 2020,
 ) -> int:
     turn_dict = {starter: i + 1 for i, starter in enumerate(starter_list)}
@@ -50,5 +50,22 @@ print("Test 5 passed")
 assert game([3, 1, 2], stop=30000000) == 362
 print("Test 6 passed")
 
+print(f"Part 2: {game([1, 20, 11, 6, 12, 0], stop=30000000)}")
 
-print(f"Part 1: {game([1, 20, 11, 6, 12, 0], stop=30000000)}")
+
+def part1(instruction_list):
+    return game(instruction_list)
+
+
+def part2(instruction_list):
+    return game(instruction_list, stop=30000000)
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

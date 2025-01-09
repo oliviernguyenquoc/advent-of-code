@@ -1,8 +1,10 @@
 import copy
-from typing import List
+import pathlib
 
 
-def neighbours_active(coord: List[str], w: int, z: int, j: int, i: int) -> (bool, bool):
+def neighbours_active(
+    coord: list[str], w: int, z: int, j: int, i: int
+) -> tuple[bool, bool]:
     neighbours_list = [
         (a, b, c, d)
         for a in [-1, 0, 1]
@@ -35,7 +37,7 @@ def neighbours_active(coord: List[str], w: int, z: int, j: int, i: int) -> (bool
     return is_two_or_three_active, is_three_active
 
 
-def count_active(coord: List[str]) -> int:
+def count_active(coord: list[str]) -> int:
     counter_active = 0
     for w in range(len(coord)):
         for z in range(len(coord[w])):
@@ -46,7 +48,7 @@ def count_active(coord: List[str]) -> int:
     return counter_active
 
 
-def add_dimensions(coord: List[str]) -> List[str]:
+def add_dimensions(coord: list[str]) -> list[str]:
     coord = (
         [[["." * len(coord[0][0][0])] * len(coord[0][0])] * len(coord[0])]
         + coord
@@ -81,31 +83,38 @@ def d3print(coord):
             print(coord[z][j])
 
 
-f = open("./day17/test_input.txt")
+def part2(instruction_list):
+    coord = "".join(instruction_list).strip().split("\n")
+    coord = [[coord]]
 
-coord = "".join(f.readlines()).split("\n")
-coord = [[coord]]
+    for _ in range(6):
+        coord = add_dimensions(coord)
+        old_coord = copy.deepcopy(coord)
 
-for _ in range(6):
-    coord = add_dimensions(coord)
-    old_coord = copy.deepcopy(coord)
-
-    for w in range(len(coord)):
-        for z in range(len(coord[w])):
-            for j in range(len(coord[w][z])):
-                for i in range(len(coord[w][z][j])):
-                    is_two_or_three_active, is_three_active = neighbours_active(
-                        old_coord, w, z, j, i
-                    )
-                    if old_coord[w][z][j][i] == "#" and not is_two_or_three_active:
-                        coord[w][z][j] = (
-                            coord[w][z][j][:i] + "." + coord[w][z][j][i + 1 :]
+        for w in range(len(coord)):
+            for z in range(len(coord[w])):
+                for j in range(len(coord[w][z])):
+                    for i in range(len(coord[w][z][j])):
+                        is_two_or_three_active, is_three_active = neighbours_active(
+                            old_coord, w, z, j, i
                         )
-                    elif old_coord[w][z][j][i] == "." and is_three_active:
-                        coord[w][z][j] = (
-                            coord[w][z][j][:i] + "#" + coord[w][z][j][i + 1 :]
-                        )
+                        if old_coord[w][z][j][i] == "#" and not is_two_or_three_active:
+                            coord[w][z][j] = (
+                                coord[w][z][j][:i] + "." + coord[w][z][j][i + 1 :]
+                            )
+                        elif old_coord[w][z][j][i] == "." and is_three_active:
+                            coord[w][z][j] = (
+                                coord[w][z][j][:i] + "#" + coord[w][z][j][i + 1 :]
+                            )
 
-    nb_active = count_active(coord)
-    print(nb_active)
-f.close()
+        nb_active = count_active(coord)
+    return nb_active
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 2: {part2(instruction_list)}")

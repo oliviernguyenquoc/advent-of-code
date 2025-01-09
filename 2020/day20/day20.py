@@ -1,4 +1,5 @@
 import math
+import pathlib
 
 
 class Tile:
@@ -90,32 +91,6 @@ def find_match(tile_dict: dict[str, Tile]) -> dict[str, Tile]:
     return adjacent_dict
 
 
-f = open("./day20/input.txt")
-
-tiles_list = "".join(f.readlines()).split("\n\n")
-
-f.close()
-
-tile_dict = {}
-
-for tile in tiles_list:
-    tile_name, tile_code = tile.split(":")
-    tile_code_list = tile_code[1:].split("\n")
-
-    tile_dict[tile_name] = Tile(name=tile_name, code=tile_code_list)
-
-adjacent_dict = find_match(tile_dict)
-
-corner_tile_list = []
-
-# Find corners
-for tile_name, tile_match_list in adjacent_dict.items():
-    if len(tile_match_list) == 2:
-        corner_tile_list.append(tile_dict[tile_name])
-
-print(f"Part 1: {math.prod([tile.number for tile in corner_tile_list])}")
-
-
 def get_right_tile(
     adjacent_dict: dict[str, Tile],
     tile_dict: dict[str, Tile],
@@ -181,64 +156,60 @@ def print_tiles(tile_list: list[Tile], len_final_square: int, limit: int = None)
         print("\n")
 
 
-corner_tile = corner_tile_list[0]
+def solve(instruction_list, part):
+    tiles_list = "".join(instruction_list).strip().split("\n\n")
 
-already_used_tile_names = []
-rearranged_tiles = []
+    tile_dict = {}
 
-# For the first corner
-i = 0
-right_tile = get_right_tile(adjacent_dict, tile_dict, corner_tile, i)
-while right_tile is None:
-    i += 1
+    for tile in tiles_list:
+        tile_name, tile_code = tile.split(":")
+        tile_code_list = tile_code[1:].split("\n")
+
+        tile_dict[tile_name] = Tile(name=tile_name, code=tile_code_list)
+
+    adjacent_dict = find_match(tile_dict)
+
+    corner_tile_list = []
+
+    # Find corners
+    for tile_name, tile_match_list in adjacent_dict.items():
+        if len(tile_match_list) == 2:
+            corner_tile_list.append(tile_dict[tile_name])
+
+    if part == 1:
+        return math.prod([tile.number for tile in corner_tile_list])
+
+    corner_tile = corner_tile_list[0]
+
+    already_used_tile_names = []
+    rearranged_tiles = []
+
+    # For the first corner
+    i = 0
     right_tile = get_right_tile(adjacent_dict, tile_dict, corner_tile, i)
+    while right_tile is None:
+        i += 1
+        right_tile = get_right_tile(adjacent_dict, tile_dict, corner_tile, i)
 
-    if i > 4:
-        print("ISSUE")
-        exit(1)
+        if i > 4:
+            print("ISSUE")
+            exit(1)
 
+    already_used_tile_names += [corner_tile.name]
 
-already_used_tile_names += [corner_tile.name]
+    corner_tile.turn_tile(5 - i)
 
-corner_tile.turn_tile(5 - i)
+    rearranged_tiles.append(corner_tile)
+    len_final_square = int(math.sqrt(len(tile_dict)))
 
-rearranged_tiles.append(corner_tile)
-len_final_square = int(math.sqrt(len(tile_dict)))
-
-# Order / turn tiles in the first row (Going from top left corner to the tiles at the direct right)
-print("--- Row 0 ----")
-for col in range(len_final_square - 1):
-    print(f"-------- Col {col} ---------")
-    adjacent_tile, j = get_right_tile(
-        adjacent_dict, tile_dict, corner_tile, 1, already_used_tile_names
-    )
-    adjacent_tile.turn_tile(7 - j)
-    if j < 4:
-        adjacent_tile.flip_horizontal_tile()
-
-    corner_tile = adjacent_tile
-    rearranged_tiles.append(adjacent_tile)
-    already_used_tile_names.append(adjacent_tile.name)
-
-# Order / turn tiles in the other rows (finding tile of the bottom of the first line ...)
-for row in range(1, len_final_square):
-    print(f"--- Row {row} ----")
-
-    for col in range(len_final_square):
-        print(f"--- Col {col} ----")
-
-        adjacent_tile, j = get_down_tile(
-            adjacent_dict,
-            tile_dict,
-            rearranged_tiles[(row - 1) * len_final_square + col],
-            2,
-            already_used_tile_names,
+    # Order / turn tiles in the first row (Going from top left corner to the tiles at the direct right)
+    print("--- Row 0 ----")
+    for col in range(len_final_square - 1):
+        print(f"-------- Col {col} ---------")
+        adjacent_tile, j = get_right_tile(
+            adjacent_dict, tile_dict, corner_tile, 1, already_used_tile_names
         )
-
-        if j < 4:
-            adjacent_tile.turn_tile(6 - j)
-        else:
-            adjacent_tile.turn_tile(4 - j)
+        adjacent_tile.turn_tile(7 - j)
         if j < 4:
             adjacent_tile.flip_horizontal_tile()
 
@@ -246,51 +217,92 @@ for row in range(1, len_final_square):
         rearranged_tiles.append(adjacent_tile)
         already_used_tile_names.append(adjacent_tile.name)
 
-print_tiles(rearranged_tiles, len_final_square, 1)
+    # Order / turn tiles in the other rows (finding tile of the bottom of the first line ...)
+    for row in range(1, len_final_square):
+        print(f"--- Row {row} ----")
 
-# Delete borders
-for tile in rearranged_tiles:
-    tile.delete_borders()
+        for col in range(len_final_square):
+            print(f"--- Col {col} ----")
 
-print("------")
-print_tiles(rearranged_tiles, len_final_square, 1)
+            adjacent_tile, j = get_down_tile(
+                adjacent_dict,
+                tile_dict,
+                rearranged_tiles[(row - 1) * len_final_square + col],
+                2,
+                already_used_tile_names,
+            )
 
-# Full image
-full_image = []
-for i in range(len_final_square):
-    sub_list = rearranged_tiles[i * len_final_square : len_final_square * (i + 1)]
-    for j in range(rearranged_tiles[0].code_size):
-        full_image.append("".join([tile.code[j] for tile in sub_list]))
+            if j < 4:
+                adjacent_tile.turn_tile(6 - j)
+            else:
+                adjacent_tile.turn_tile(4 - j)
+            if j < 4:
+                adjacent_tile.flip_horizontal_tile()
 
-print("------")
-for line in full_image[:6]:
-    print(line)
+            corner_tile = adjacent_tile
+            rearranged_tiles.append(adjacent_tile)
+            already_used_tile_names.append(adjacent_tile.name)
 
-image_tile = Tile("Full image", full_image)
-see_monster = ["                  # ", "#    ##    ##    ###", " #  #  #  #  #  #   "]
-see_monster_list = [
-    (i, j)
-    for i in range(len(see_monster))
-    for j, char in enumerate(see_monster[i])
-    if char == "#"
-]
+    print_tiles(rearranged_tiles, len_final_square, 1)
 
-nb_monster = 0
+    # Delete borders
+    for tile in rearranged_tiles:
+        tile.delete_borders()
 
-for _ in range(4):
-    nb_monster += image_tile.count_nb_monster(see_monster_list)
-    image_tile.turn_tile(1)
-    print(nb_monster)
+    print("------")
+    print_tiles(rearranged_tiles, len_final_square, 1)
 
-image_tile.flip_horizontal_tile()
+    # Full image
+    full_image = []
+    for i in range(len_final_square):
+        sub_list = rearranged_tiles[i * len_final_square : len_final_square * (i + 1)]
+        for j in range(rearranged_tiles[0].code_size):
+            full_image.append("".join([tile.code[j] for tile in sub_list]))
 
-for _ in range(4):
-    nb_monster += image_tile.count_nb_monster(see_monster_list)
-    image_tile.turn_tile(1)
-    print(nb_monster)
+    print("------")
+    for line in full_image[:6]:
+        print(line)
 
-print(image_tile.count_ones(), nb_monster * len(see_monster_list))
-print(f"Part 2: {image_tile.count_ones() - (nb_monster*len(see_monster_list))}")
+    image_tile = Tile("Full image", full_image)
+    see_monster = [
+        "                  # ",
+        "#    ##    ##    ###",
+        " #  #  #  #  #  #   ",
+    ]
+    see_monster_list = [
+        (i, j)
+        for i in range(len(see_monster))
+        for j, char in enumerate(see_monster[i])
+        if char == "#"
+    ]
+
+    nb_monster = 0
+
+    for _ in range(4):
+        nb_monster += image_tile.count_nb_monster(see_monster_list)
+        image_tile.turn_tile(1)
+        print(nb_monster)
+
+    image_tile.flip_horizontal_tile()
+
+    for _ in range(4):
+        nb_monster += image_tile.count_nb_monster(see_monster_list)
+        image_tile.turn_tile(1)
+        print(nb_monster)
+
+    print(image_tile.count_ones(), nb_monster * len(see_monster_list))
+
+    return image_tile.count_ones() - (nb_monster * len(see_monster_list))
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")
 
 
 # X/0 => X/270° + Flip H

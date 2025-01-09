@@ -1,23 +1,32 @@
-f = open("./day6/input.txt")
+import pathlib
 
-answer_list = "".join(f.readlines()).split("\n\n")
 
-total_question = 0
+def part2(instruction_list):
+    answer_list = "".join(instruction_list).split("\n\n")
 
-for group_answer in answer_list:
-    individual_anwser_list = "".join(group_answer).split("\n")
+    total_question = 0
 
-    question_set_list = []
-    intersection_set = {}
+    for group_answer in answer_list:
+        individual_anwser_list = "".join(group_answer).split("\n")
 
-    for i, individual_anwser in enumerate(individual_anwser_list):
-        question_set = {question for question in individual_anwser}
-        if i == 0:
-            intersection_set = question_set
-        else:
-            intersection_set = intersection_set.intersection(question_set)
+        intersection_set = {}
 
-    total_question += len(intersection_set)
+        for i, individual_anwser in enumerate(individual_anwser_list):
+            question_set = {question for question in individual_anwser}
+            if i == 0:
+                intersection_set = question_set
+            else:
+                intersection_set = intersection_set.intersection(question_set)
 
-print(total_question)
-f.close()
+        total_question += len(intersection_set)
+
+    return total_question
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 2: {part2(instruction_list)}")

@@ -1,7 +1,7 @@
 """Version 2 with formal bits operation: Much better !"""
 
 import re
-from typing import List
+import pathlib
 
 
 def modify_bits_part1(mask: str, bit_value: str) -> int:
@@ -21,7 +21,7 @@ def modify_bits_part1(mask: str, bit_value: str) -> int:
     return bit_value
 
 
-def modify_bits_part2(mask: str, bit_value: str) -> List[int]:
+def modify_bits_part2(mask: str, bit_value: str) -> list[int]:
     bit_level = 0
     possible_value_list = [bit_value]
 
@@ -47,35 +47,39 @@ def modify_bits_part2(mask: str, bit_value: str) -> List[int]:
     return possible_value_list
 
 
-f = open("./day14/input.txt")
+def solve(instruction_list, part):
+    mask = ""
+    mem_part1 = {}
+    mem_part2 = {}
 
-instruction_list = f.readlines()
+    for instruction in instruction_list:
+        if "mask = " in instruction:
+            mask = re.findall(r"mask = ([0-9X]*)", instruction)[0]
 
-mask = ""
-mem_part1 = {}
-mem_part2 = {}
+        if "mem" in instruction:
+            mem_instruction = re.findall(r"mem\[([0-9]*)\] = ([0-9]*)", instruction)[0]
+            memory = int(mem_instruction[0])
+            value = int(mem_instruction[1])
 
-for instruction in instruction_list:
-    if "mask = " in instruction:
-        mask = re.findall(r"mask = ([0-9X]*)", instruction)[0]
+            # Part 1
+            mem_part1[memory] = modify_bits_part1(mask, value)
 
-    if "mem" in instruction:
-        mem_instruction = re.findall(r"mem\[([0-9]*)\] = ([0-9]*)", instruction)[0]
-        memory = int(mem_instruction[0])
-        value = int(mem_instruction[1])
+            # Part 2
+            memory_list = modify_bits_part2(mask, memory)
+            for i in memory_list:
+                mem_part2[i] = value
 
-        # Part 1
-        mem_part1[memory] = modify_bits_part1(mask, value)
+    if part == 1:
+        return sum(mem_part1.values())
+    else:
+        return sum(mem_part2.values())
 
-        # Part 2
-        memory_list = modify_bits_part2(mask, memory)
-        for i in memory_list:
-            mem_part2[i] = value
 
-print(len(mem_part1))
-print(f"Part 1 : {sum(mem_part1.values())}")
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
 
-print(len(mem_part2))
-print(f"Part 2 : {sum(mem_part2.values())}")
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
 
-f.close()
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

@@ -1,12 +1,5 @@
 from day7_common import get_bag_dict
-
-f = open("./day7/input.txt")
-
-instruction_list = f.readlines()
-
-bag_dict = get_bag_dict(instruction_list)
-
-total_bags = 0
+import pathlib
 
 
 def get_nb_gold_bag(bag_type, bag_dict):
@@ -21,20 +14,30 @@ def get_nb_gold_bag(bag_type, bag_dict):
         return 0
 
 
-total = 0
-total_bag_list = []
-for bag, bag_list in bag_dict.items():
-    if bag_list:
-        contain_gold_bag_bool = False
-        for nb_bag, bag_type in bag_list:
-            test_bag = get_nb_gold_bag(bag_type, bag_dict)
-            if test_bag:
-                contain_gold_bag_bool = True
+def part1(instruction_list):
+    bag_dict = get_bag_dict(instruction_list)
 
-        if contain_gold_bag_bool:
-            total_bag_list.append(bag)
-            total += 1
+    total = 0
+    total_bag_list = []
+    for bag, bag_list in bag_dict.items():
+        if bag_list:
+            contain_gold_bag_bool = False
+            for nb_bag, bag_type in bag_list:
+                test_bag = get_nb_gold_bag(bag_type, bag_dict)
+                if test_bag:
+                    contain_gold_bag_bool = True
 
-print(total)
+            if contain_gold_bag_bool:
+                total_bag_list.append(bag)
+                total += 1
 
-f.close()
+    return total
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")

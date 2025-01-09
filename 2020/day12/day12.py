@@ -1,3 +1,6 @@
+import pathlib
+
+
 class BoatPart1:
     def __init__(self):
         self.direction = "E"
@@ -75,20 +78,33 @@ class BoatPart2:
         self.y += n * self.waypoint_y
 
 
-f = open("./day12/input.txt")
+def part1(instruction_list):
+    boat = BoatPart1()
 
-instruction_list = f.readlines()
+    for instruction in instruction_list:
+        command = instruction[0]
+        n = int(instruction[1:])
+        boat.move(command, n)
 
-boat1 = BoatPart1()
-boat2 = BoatPart2()
+    return abs(boat.x) + abs(boat.y)
 
-for instruction in instruction_list:
-    command = instruction[0]
-    n = int(instruction[1:])
-    boat1.move(command, n)
-    boat2.move(command, n)
 
-print(f"Answer to part 1: {abs(boat1.x) + abs(boat1.y)}")
-print(f"Answer to part 2: {abs(boat2.x) + abs(boat2.y)}")
+def part2(instruction_list):
+    boat = BoatPart2()
 
-f.close()
+    for instruction in instruction_list:
+        command = instruction[0]
+        n = int(instruction[1:])
+        boat.move(command, n)
+
+    return abs(boat.x) + abs(boat.y)
+
+
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list)}")

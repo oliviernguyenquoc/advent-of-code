@@ -1,3 +1,6 @@
+import pathlib
+
+
 def evaluate(nb1: int, op: str, nb2: int) -> int:
     if op == "+":
         res = nb1 + nb2
@@ -62,20 +65,26 @@ def calculate_plus(op: str) -> int:
     return res_stack[0]
 
 
-f = open("./day18/input.txt")
+def part2(instruction_list):
+    op_list = "".join(instruction_list).strip().split("\n")
+    op_list = [op.replace(" ", "") for op in op_list]
 
-op_list = "".join(f.readlines()).split("\n")
-op_list = [op.replace(" ", "") for op in op_list]
+    results = []
 
-results = []
+    for op in op_list:
+        # print("op: ", op)
+        res = calculate_plus(op)
+        # print("res", res)
+        results.append(res)
 
-for op in op_list:
-    print("op: ", op)
-    res = calculate_plus(op)
-    print("res", res)
-    results.append(res)
+    # print(results)
+    return sum(results)
 
-print(results)
-print(sum(results))
 
-f.close()
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 2: {part2(instruction_list)}")

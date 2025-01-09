@@ -2,10 +2,10 @@
 
 import itertools
 import re
-from typing import Dict, List
+import pathlib
 
 
-def _replace_fixed_bits(mask_dict: Dict[int, str], bit_value: str) -> int:
+def _replace_fixed_bits(mask_dict: dict[int, str], bit_value: str) -> int:
     for i, bit in mask_dict.items():
         if i <= len(bit_value) - 2:
             if i == 0:
@@ -32,7 +32,7 @@ def modify_bits_part1(mask: str, bit_value: str) -> int:
     return int(bit_value, 2)
 
 
-def modify_bits_part2(mask: str, bit_value: str) -> List[int]:
+def modify_bits_part2(mask: str, bit_value: str) -> list[int]:
     mask_dict_1 = {len(mask) - i - 1: bit for i, bit in enumerate(mask) if bit == "1"}
     mask_dict_X = {len(mask) - i - 1: bit for i, bit in enumerate(mask) if bit == "X"}
 
@@ -82,36 +82,40 @@ def modify_bits_part2(mask: str, bit_value: str) -> List[int]:
     return final_list
 
 
-f = open("./day14/input.txt")
+def solve(instruction_list, part):
+    mask = ""
+    mem_part1 = {}
+    mem_part2 = {}
 
-instruction_list = f.readlines()
+    for instruction in instruction_list:
+        if "mask = " in instruction:
+            mask = re.findall(r"mask = ([0-9X]*)", instruction)[0]
+            print(mask)
 
-mask = ""
-mem_part1 = {}
-mem_part2 = {}
+        if "mem" in instruction:
+            mem_instruction = re.findall(r"mem\[([0-9]*)\] = ([0-9]*)", instruction)[0]
+            memory = int(mem_instruction[0])
+            value = int(mem_instruction[1])
 
-for instruction in instruction_list:
-    if "mask = " in instruction:
-        mask = re.findall(r"mask = ([0-9X]*)", instruction)[0]
-        print(mask)
+            print(memory, bin(int(value)))
 
-    if "mem" in instruction:
-        mem_instruction = re.findall(r"mem\[([0-9]*)\] = ([0-9]*)", instruction)[0]
-        memory = int(mem_instruction[0])
-        value = int(mem_instruction[1])
+            mem_part1[memory] = modify_bits_part1(mask, bin(int(value)))
 
-        print(memory, bin(int(value)))
+            memory_list = modify_bits_part2(mask, bin(int(memory)))
+            for i in memory_list:
+                mem_part2[i] = value
 
-        mem_part1[memory] = modify_bits_part1(mask, bin(int(value)))
+    if part == 1:
+        return sum(mem_part1.values())
+    else:
+        return sum(mem_part2.values())
 
-        memory_list = modify_bits_part2(mask, bin(int(memory)))
-        for i in memory_list:
-            mem_part2[i] = value
 
-print(len(mem_part1))
-print(f"Part 1 : {sum(mem_part1.values())}")
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
 
-print(len(mem_part2))
-print(f"Part 2 : {sum(mem_part2.values())}")
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
 
-f.close()
+    print(f"Part 1: {solve(instruction_list, part=1)}")
+    print(f"Part 2: {solve(instruction_list, part=2)}")

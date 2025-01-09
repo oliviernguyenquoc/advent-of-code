@@ -1,8 +1,8 @@
 import math
-from typing import List
+import pathlib
 
 
-def chinese_remainder(n: List[int], a: List[int]):
+def chinese_remainder(n: list[int], a: list[int]):
     sum_total = 0
     prod = math.prod(n)
     for n_i, a_i in zip(n, a):
@@ -16,24 +16,30 @@ def modular_multiplicative_inverse(a: int, m: int) -> int:
     return pow(a, -1, m)
 
 
-f = open("./day13/input.txt")
+def part2(instruction_list):
+    # departure = int(instruction_list[0])
+    bus_list = instruction_list[1].split(",")
 
-instruction_list = f.readlines()
+    print(bus_list)
+    bus_id_dict = {
+        int(bus_id): int(bus_id) - i
+        for i, bus_id in enumerate(bus_list)
+        if bus_id != "x"
+    }
 
-departure = int(instruction_list[0])
-bus_list = instruction_list[1].split(",")
+    max_bus_id = max(bus_id_dict)
+    idx_max_bus_id = bus_id_dict[max_bus_id]
 
-print(bus_list)
-bus_id_dict = {
-    int(bus_id): int(bus_id) - i for i, bus_id in enumerate(bus_list) if bus_id != "x"
-}
+    print(max_bus_id, idx_max_bus_id)
 
-max_bus_id = max(bus_id_dict)
-idx_max_bus_id = bus_id_dict[max_bus_id]
+    print(list(bus_id_dict.keys()), list(bus_id_dict.values()))
+    return chinese_remainder(list(bus_id_dict.keys()), list(bus_id_dict.values()))
 
-print(max_bus_id, idx_max_bus_id)
 
-print(list(bus_id_dict.keys()), list(bus_id_dict.values()))
-print(chinese_remainder(list(bus_id_dict.keys()), list(bus_id_dict.values())))
+if __name__ == "__main__":
+    PUZZLE_DIR = pathlib.Path(__file__).parent
 
-f.close()
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+        instruction_list: list[str] = f.readlines()
+
+    print(f"Part 2: {part2(instruction_list)}")
