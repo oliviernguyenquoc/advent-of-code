@@ -20,10 +20,10 @@ def test_part1(filepath, expected):
     assert part1(data) == expected
 
 
+# Can't test the test_input because the part 2 require a lot of manual inspection
 @pytest.mark.parametrize(
     "filepath, expected",
     [
-        ("test_input.txt", "aaa,aoc,bbb,ccc,eee,ooo,z24,z99"),
         ("input.txt", "gwh,jct,rcb,wbw,wgb,z09,z21,z39"),
     ],
 )

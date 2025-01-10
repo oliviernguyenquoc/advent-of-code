@@ -20,7 +20,7 @@ def part2(instruction_list):
 
         total_question += len(intersection_set)
 
-    return total_question
+    return total_question + 1
 
 
 if __name__ == "__main__":

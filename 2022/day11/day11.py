@@ -69,11 +69,13 @@ def solve(instructions, part):
         NB_ROUND: int = 10000
 
     values = re.findall(
-        r"""Monkey ([0-9]*):\n  Starting items: ([0-9 ,]*)
-    Operation: new = old (.) (.*)\n  Test: divisible by ([0-9]*)
-        If true: throw to monkey ([0-9]*)
-        If false: throw to monkey ([0-9]*)""",
-        instructions,
+        r"""Monkey ([0-9]+):
+  Starting items: ([0-9 ,]+)
+  Operation: new = old (.) (.+)
+  Test: divisible by ([0-9]*)
+    If true: throw to monkey ([0-9]+)
+    If false: throw to monkey ([0-9]+)""",
+        instructions.strip(),
     )
 
     monkey_list: list[Monkey] = []
@@ -105,7 +107,7 @@ def solve(instructions, part):
 
     monkey_dict: dict[int, int] = {i: 0 for i in range(len(monkey_list))}
 
-    for round_number in range(NB_ROUND):
+    for _ in range(NB_ROUND):
         # print(f"Round {round_number}")
         for monkey_idx, monkey in enumerate(monkey_list):
             monkey_dict[monkey_idx] += len(monkey.item_list)

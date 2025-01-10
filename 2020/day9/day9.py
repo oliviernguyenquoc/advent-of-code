@@ -34,27 +34,39 @@ def find_continuous_sum(a: int, x: list[int]) -> tuple[int]:
     return (0, 0)
 
 
-def parse_data(nb_list):
+def parse_data(nb_list, len_check):
     nb_list = [int(nb) for nb in nb_list]
-    LEN_CHECK = 25
 
     # Complexity n * k*log(k) with k=25
-    for i in range(len(nb_list) - LEN_CHECK):
+    for i in range(len(nb_list) - len_check):
         if not check_there_is_two_number_sum(
-            nb_list[i + LEN_CHECK], nb_list[i : i + LEN_CHECK]
+            nb_list[i + len_check], nb_list[i : i + len_check]
         ):
             break
 
-    return nb_list, i, LEN_CHECK
+    return nb_list, i
 
 
-def part1(nb_list):
-    nb_list, i, LEN_CHECK = parse_data(nb_list)
+def part1(nb_list, is_test=False):
+    if is_test:
+        LEN_CHECK = 5
+    else:
+        LEN_CHECK = 25
+
+    nb_list, i = parse_data(nb_list, LEN_CHECK)
     return nb_list[i + LEN_CHECK]
 
 
-def part2(nb_list):
-    nb_list, i, LEN_CHECK = parse_data(nb_list)
+def part2(nb_list, is_test=False):
+    if is_test:
+        LEN_CHECK = 5
+    else:
+        LEN_CHECK = 25
+
+    (
+        nb_list,
+        i,
+    ) = parse_data(nb_list, LEN_CHECK)
     a, b = find_continuous_sum(nb_list[i + LEN_CHECK], nb_list)
     return min(nb_list[a:b]) + max(nb_list[a:b])
 

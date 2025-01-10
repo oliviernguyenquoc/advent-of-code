@@ -22,10 +22,10 @@ def test_part1(filepath, expected):
 
 
 @pytest.mark.parametrize(
-    "filepath, cycle_length, expected",
-    [("test_input.txt", 13, 64), ("input.txt", 10, 104533)],
+    "filepath, cycle_start, cycle_length, expected",
+    [("test_input.txt", 13, 7, 64), ("input.txt", 91, 9, 104533)],
 )
-def test_part2(filepath, cycle_length, expected):
+def test_part2(filepath, cycle_start, cycle_length, expected):
     """Test part 2"""
     data = load_input(filepath)
-    assert part2(data, cycle_length) == expected
+    assert part2(data, cycle_start, cycle_length) == expected

@@ -13,19 +13,20 @@ def load_input(path):
 
 
 @pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", "CMZ"), ("input.txt", "RFFFWBPNS")]
+    "filepath, is_test, expected",
+    [("test_input.txt", True, "CMZ"), ("input.txt", False, "RFFFWBPNS")],
 )
-def test_part1(filepath, expected):
+def test_part1(filepath, is_test, expected):
     """Test part 1"""
     data = load_input(filepath)
-    assert part1(data) == expected
+    assert part1(data, is_test=is_test) == expected
 
 
 @pytest.mark.parametrize(
-    "filepath, expected",
-    [("test_input.txt", "MCD"), ("input.txt", "CQQBBJFCS")],
+    "filepath, is_test, expected",
+    [("test_input.txt", True, "MCD"), ("input.txt", False, "CQQBBJFCS")],
 )
-def test_part2(filepath, expected):
+def test_part2(filepath, is_test, expected):
     """Test part 2"""
     data = load_input(filepath)
-    assert part2(data) == expected
+    assert part2(data, is_test=is_test) == expected

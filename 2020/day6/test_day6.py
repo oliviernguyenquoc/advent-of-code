@@ -8,7 +8,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 def load_input(path):
     with open(PUZZLE_DIR / path, encoding="utf-8") as f:
-        instruction_list: list[str] = f.read().splitlines()
+        instruction_list: list[str] = f.readlines()
     return instruction_list
 
 

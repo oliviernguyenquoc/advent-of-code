@@ -2,10 +2,10 @@ import pytest
 import pathlib
 from .day11 import solve
 
-PUZZLE_DIR = pathlib.Path(__file__).parent
-
 
 def load_input(path):
+    PUZZLE_DIR = pathlib.Path(__file__).parent
+
     with open(PUZZLE_DIR / path, encoding="utf-8") as f:
         instruction_list: list[str] = f.read()
     return instruction_list

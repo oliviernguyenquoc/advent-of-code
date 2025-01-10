@@ -6,7 +6,7 @@ def test_algo(instruction_list):
     i = 0
     acc = 0
 
-    while not done_list[i] and i != len(instruction_list) - 1:
+    while i != len(instruction_list) and not done_list[i]:
         done_list[i] = True
         instruction, nb = instruction_list[i][0], int(instruction_list[i][1])
         if instruction == "acc":
@@ -17,7 +17,7 @@ def test_algo(instruction_list):
         elif instruction == "nop":
             i += 1
 
-    return i == len(instruction_list) - 1, acc
+    return i == len(instruction_list), acc
 
 
 def part2(instruction_list):

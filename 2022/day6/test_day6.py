@@ -7,17 +7,17 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 def load_input(path):
     with open(PUZZLE_DIR / path, encoding="utf-8") as f:
-        instruction_list: list[str] = f.readlines()
+        instruction_list: list[str] = f.read().splitlines()
     return instruction_list
 
 
 @pytest.mark.parametrize(
     "data, expected",
     [
-        ("bvwbjplbgvbhsrlpgdmjqwftvncz", 5),
-        ("nppdvjthqldpwncqszvftbrmjlhg", 6),
-        ("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10),
-        ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11),
+        (["bvwbjplbgvbhsrlpgdmjqwftvncz"], 5),
+        (["nppdvjthqldpwncqszvftbrmjlhg"], 6),
+        (["nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"], 10),
+        (["zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"], 11),
     ],
 )
 def test_part1(data, expected):
@@ -44,11 +44,11 @@ def test_part2_loaded(filepath, expected):
 @pytest.mark.parametrize(
     "data, expected",
     [
-        ("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19),
-        ("bvwbjplbgvbhsrlpgdmjqwftvncz", 23),
-        ("nppdvjthqldpwncqszvftbrmjlhg", 23),
-        ("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29),
-        ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26),
+        (["mjqjpqmgbljsphdztnvjfqwrcgsmlb"], 19),
+        (["bvwbjplbgvbhsrlpgdmjqwftvncz"], 23),
+        (["nppdvjthqldpwncqszvftbrmjlhg"], 23),
+        (["nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"], 29),
+        (["zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"], 26),
     ],
 )
 def test_part2(data, expected):
