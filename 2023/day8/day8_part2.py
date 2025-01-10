@@ -39,7 +39,7 @@ def part2(instructions):
             break
 
     diff_dict = {
-        position: [y - x for (x, y) in itertools.pairwise(position_list[:-20])]
+        position: [y - x for (x, y) in itertools.pairwise(position_list)]
         for position, position_list in position_memory.items()
     }
 

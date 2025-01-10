@@ -33,14 +33,15 @@ def part2(seat_list):
 
     for i in range(13, 880):
         if i not in sorted(id_list):
-            print(i)
-    return sorted(id_list)
+            return i
+
+    raise Exception("Error")
 
 
 if __name__ == "__main__":
     PUZZLE_DIR = pathlib.Path(__file__).parent
 
-    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 2: {part2(instruction_list)}")

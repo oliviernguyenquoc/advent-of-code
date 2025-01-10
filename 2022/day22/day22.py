@@ -175,7 +175,7 @@ def part1(instruction_list):
     )
 
 
-def part2(instruction_list):
+def part2(instruction_list, is_test):
     path: str = instruction_list[-1]
 
     path_list = re.split(r"(\d+)", path)
@@ -190,7 +190,7 @@ def part2(instruction_list):
         # print(instruction)
 
         if instruction.isnumeric():
-            cursor.move(nb_steps=int(instruction), part=2, test_exemple=False)
+            cursor.move(nb_steps=int(instruction), part=2, test_exemple=is_test)
         elif instruction == "R":
             cursor.turn_right()
         elif instruction == "L":
@@ -211,4 +211,4 @@ if __name__ == "__main__":
         instruction_list: list[str] = f.read().splitlines()
 
     print(f"Part 1: {part1(instruction_list)}")
-    print(f"Part 2: {part2(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list, is_test=True)}")

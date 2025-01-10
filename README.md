@@ -38,3 +38,5 @@ Results can be generated with pytest custom pluggin:
 ![Alt text](./results_2020.svg)
 
 </details>
+
+Note: I only used Github Copilot to help me generate tests

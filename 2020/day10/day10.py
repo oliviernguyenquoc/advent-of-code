@@ -77,5 +77,7 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
+    instruction_list = [int(i.strip()) for i in instruction_list]
+
     print(f"Part 1: {part1(instruction_list)}")
     print(f"Part 2: {part2(instruction_list)}")

@@ -73,8 +73,11 @@ class Environment:
                 self.points[detress_x, detress_y] = "#"
 
 
-def part1(instruction_list):
-    ROW_CHECKED = 10  # 2000000
+def part1(instruction_list, is_test):
+    if is_test:
+        ROW_CHECKED = 10
+    else:
+        ROW_CHECKED = 2000000
 
     environment = Environment({})
 
@@ -144,8 +147,8 @@ def part2(instruction_list):
 if __name__ == "__main__":
     PUZZLE_DIR = pathlib.Path(__file__).parent
 
-    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
+    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
-    print(f"Part 1: {part1(instruction_list)}")
+    print(f"Part 1: {part1(instruction_list, is_test=False)}")
     print(f"Part 2: {part2(instruction_list)}")

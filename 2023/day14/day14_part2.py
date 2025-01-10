@@ -35,7 +35,7 @@ def tilt(
     return rock_tilt
 
 
-def part2(instruction_list, cycle_length=9):
+def part2(instruction_list, cycle_start=91, cycle_length=9):
     grid = [instroduction.strip() for instroduction in instruction_list]
 
     rock_list = []
@@ -70,14 +70,15 @@ def part2(instruction_list, cycle_length=9):
             tmp += y_len - y
 
         total.append(tmp)
-        if (i + 1) % cycle_length == 0:
+        print(i + 1, tmp)
+        if (i + 1) % (cycle_start + cycle_length) == 0:
             return tmp
 
 
 if __name__ == "__main__":
     PUZZLE_DIR = pathlib.Path(__file__).parent
 
-    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
-    print(f"Part 2: {part2(instruction_list, 13)}")
+    print(f"Part 2: {part2(instruction_list, 13, 7)}")

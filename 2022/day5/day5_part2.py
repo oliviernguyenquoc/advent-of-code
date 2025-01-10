@@ -1,8 +1,11 @@
 import pathlib
 
 
-def part2(instruction_list):
-    NB_STACKS = 9
+def part2(instruction_list, is_test):
+    if is_test:
+        NB_STACKS = 3
+    else:
+        NB_STACKS = 9
 
     stack: list[list[str]] = [[] for i in range(NB_STACKS)]
 
@@ -12,7 +15,7 @@ def part2(instruction_list):
             and not instruction.startswith(" 1   2   3")
             and instruction != ""
         ):
-            for i in range(0, NB_STACKS * 4, 4):
+            for i in range(0, len(instruction), 4):
                 if instruction[i : i + 3] == "   ":
                     continue
                 if instruction[i] == "[":
@@ -42,4 +45,4 @@ if __name__ == "__main__":
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.read().splitlines()
 
-    print(f"Part 2: {part2(instruction_list)}")
+    print(f"Part 2: {part2(instruction_list, is_test=False)}")

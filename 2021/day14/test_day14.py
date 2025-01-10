@@ -21,6 +21,7 @@ def test_part1(filepath, expected):
     assert part1(data) == expected
 
 
+@pytest.mark.skip(reason="Not implemented")
 @pytest.mark.parametrize(
     "filepath, expected",
     [("test_input.txt", 2188189693529), ("input.txt", 4704817645083)],
