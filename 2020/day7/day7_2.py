@@ -1,4 +1,4 @@
-from day7_common import get_bag_dict
+from .day7_common import get_bag_dict
 import pathlib
 
 

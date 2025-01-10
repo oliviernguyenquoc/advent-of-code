@@ -1,14 +1,15 @@
 import pathlib
+import re
 
 
 def part1(instruction_list):
     total_true_password = 0
 
     for arr in instruction_list:
-        min_letter, max_letter = map(int, arr[0].split("-"))
-        letter = arr[1][0]
-        password = arr[2]
-        print((min_letter, max_letter, letter, password))
+        min_letter, max_letter, letter, password = re.search(
+            r"(\d+)-(\d+) ([a-z]): ([a-z]+)", arr
+        ).groups()
+        min_letter, max_letter = int(min_letter), int(max_letter)
         count_letter = password.count(letter)
         if count_letter >= min_letter and count_letter <= max_letter:
             total_true_password += 1

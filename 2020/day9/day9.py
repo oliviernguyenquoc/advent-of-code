@@ -62,7 +62,7 @@ def part2(nb_list):
 if __name__ == "__main__":
     PUZZLE_DIR = pathlib.Path(__file__).parent
 
-    with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
+    with open(PUZZLE_DIR / "test_input.txt", encoding="utf-8") as f:
         instruction_list: list[str] = f.readlines()
 
     print(f"Part 1: {part1(instruction_list)}")

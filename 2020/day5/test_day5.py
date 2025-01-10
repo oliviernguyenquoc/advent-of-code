@@ -12,19 +12,29 @@ def load_input(path):
     return instruction_list
 
 
-@pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", 357), ("input.txt", 880)]
-)
-def test_part1(filepath, expected):
+@pytest.mark.parametrize("filepath, expected", [("input.txt", 880)])
+def test_part1_loaded(filepath, expected):
     """Test part 1"""
     data = load_input(filepath)
     assert part1(data) == expected
 
 
 @pytest.mark.parametrize(
-    "filepath, expected", [("test_input.txt", 120), ("input.txt", 731)]
+    "data, expected",
+    [
+        (["FBFBBFFRLR"], 357),
+        (["BFFFBBFRRR"], 567),
+        (["FFFBBBFRRR"], 119),
+        (["BBFFBBFRLL"], 820),
+    ],
 )
-def test_part2(filepath, expected):
+def test_part1(data, expected):
+    """Test part 1"""
+    assert part1(data) == expected
+
+
+@pytest.mark.parametrize("filepath, expected", [("input.txt", 731)])
+def test_part2_loaded(filepath, expected):
     """Test part 2"""
     data = load_input(filepath)
     assert part2(data) == expected

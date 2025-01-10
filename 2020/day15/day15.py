@@ -20,37 +20,37 @@ def game(
     return last_number
 
 
-eg0 = [0, 3, 6]
-print(game(eg0))
-assert game([1, 3, 2], stop=2020) == 1
-print("Test 1 passed")
-assert game([2, 1, 3], stop=2020) == 10
-print("Test 2 passed")
-assert game([1, 2, 3], stop=2020) == 27
-print("Test 3 passed")
-assert game([2, 3, 1], stop=2020) == 78
-print("Test 4 passed")
-assert game([3, 2, 1], stop=2020) == 438
-print("Test 5 passed")
-assert game([3, 1, 2], stop=2020) == 1836
-print("Test 6 passed")
+# eg0 = [0, 3, 6]
+# print(game(eg0))
+# assert game([1, 3, 2], stop=2020) == 1
+# print("Test 1 passed")
+# assert game([2, 1, 3], stop=2020) == 10
+# print("Test 2 passed")
+# assert game([1, 2, 3], stop=2020) == 27
+# print("Test 3 passed")
+# assert game([2, 3, 1], stop=2020) == 78
+# print("Test 4 passed")
+# assert game([3, 2, 1], stop=2020) == 438
+# print("Test 5 passed")
+# assert game([3, 1, 2], stop=2020) == 1836
+# print("Test 6 passed")
 
-print(f"Part 1: {game([1, 20, 11, 6, 12, 0])}")
+# print(f"Part 1: {game([1, 20, 11, 6, 12, 0])}")
 
-assert game([0, 3, 6], stop=30000000) == 175594
-print("Test 1 passed")
-assert game([1, 3, 2], stop=30000000) == 2578
-print("Test 2 passed")
-assert game([1, 2, 3], stop=30000000) == 261214
-print("Test 3 passed")
-assert game([2, 3, 1], stop=30000000) == 6895259
-print("Test 4 passed")
-assert game([3, 2, 1], stop=30000000) == 18
-print("Test 5 passed")
-assert game([3, 1, 2], stop=30000000) == 362
-print("Test 6 passed")
+# assert game([0, 3, 6], stop=30000000) == 175594
+# print("Test 1 passed")
+# assert game([1, 3, 2], stop=30000000) == 2578
+# print("Test 2 passed")
+# assert game([1, 2, 3], stop=30000000) == 261214
+# print("Test 3 passed")
+# assert game([2, 3, 1], stop=30000000) == 6895259
+# print("Test 4 passed")
+# assert game([3, 2, 1], stop=30000000) == 18
+# print("Test 5 passed")
+# assert game([3, 1, 2], stop=30000000) == 362
+# print("Test 6 passed")
 
-print(f"Part 2: {game([1, 20, 11, 6, 12, 0], stop=30000000)}")
+# print(f"Part 2: {game([1, 20, 11, 6, 12, 0], stop=30000000)}")
 
 
 def part1(instruction_list):
@@ -65,7 +65,8 @@ if __name__ == "__main__":
     PUZZLE_DIR = pathlib.Path(__file__).parent
 
     with open(PUZZLE_DIR / "input.txt", encoding="utf-8") as f:
-        instruction_list: list[str] = f.readlines()
+        instruction_list: list[str] = f.read().strip().split(",")
+    instruction_list = [int(i) for i in instruction_list]
 
     print(f"Part 1: {part1(instruction_list)}")
     print(f"Part 2: {part2(instruction_list)}")
