@@ -1,6 +1,7 @@
 import pytest
 import pathlib
-from .day18 import part1, part2
+from .day18 import part1
+from .day18_2 import part2
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -11,19 +12,15 @@ def load_input(path):
     return instruction_list
 
 
-@pytest.mark.parametrize(
-    "filepath, expected, is_test",
-    [("test_input.txt", 22, True), ("input.txt", 318, False)],
-)
+@pytest.mark.parametrize("filepath, expected, is_test", [("input.txt", 4940631886147)])
 def test_part1(filepath, expected, is_test):
     """Test part 1"""
     data = load_input(filepath)
-    assert part1(data, is_test) == expected
+    assert part1(data) == expected
 
 
 @pytest.mark.parametrize(
-    "filepath, expected, is_test",
-    [("test_input.txt", "6,1", True), ("input.txt", "56,29", False)],
+    "filepath, expected, is_test", [("input.txt", 283582817678281)]
 )
 def test_part2(filepath, expected, is_test):
     """Test part 2"""
