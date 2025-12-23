@@ -1,11 +1,18 @@
 # Advent of code solutions
 
-All my solutions for [advent of code](https://adventofcode.com/) (from 2020 to 2024)
+All my solutions for [advent of code](https://adventofcode.com/) (from 2020 to 2025)
 
 Results can be generated with pytest custom pluggin:
 
 <details open>
-<summary>$${\color{green}[2024] \space \color{yellow}48*}$$</summary>
+<summary>$${\color{green}[2025] \space \color{yellow}19*}$$</summary>
+
+![Alt text](./results_2025.svg)
+
+</details>
+
+<details>
+<summary>$${\color{green}[2024] \space \color{yellow}48*}$$(⬇️ details)</summary>
 
 ![Alt text](./results_2024.svg)
 
