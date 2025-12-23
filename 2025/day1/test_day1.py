@@ -20,7 +20,9 @@ def test_part1_example1(filepath, expected):
     assert part1(data) == expected
 
 
-@pytest.mark.parametrize("filepath, expected", [("test_input.txt", 6)])
+@pytest.mark.parametrize(
+    "filepath, expected", [("test_input.txt", 6), ("input.txt", 5831)]
+)
 def test_part2_example1(filepath, expected):
     """Test part 2 on example input."""
     data = load_input(filepath)
